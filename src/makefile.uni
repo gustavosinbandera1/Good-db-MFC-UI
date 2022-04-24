@@ -1,0 +1,257 @@
+# -*- makefile -*-
+# Generic makefile for Unix. 
+# This files should be included from system dependent version of makefile
+# which specifies values of following symbols:
+#   
+#  CC       - C++ compiler
+#  CFLAGS   - flags for C++ compiler
+#  SOFLAGS  - flags for makeing shared object (.so)
+#  LD       - linker
+#  LDFLAGS  - flags for linker
+#  AR       - archive library maintainer
+#  ARFLAGS  - flags for archive library maintainer to create library
+#  RANLIB   - archive toc generator
+#  STDLIBS  - list of system libraries (sockets, threads...)
+#  TASK_OBJ - list of system dependent tasking object files 
+#
+#--------------------------------------------------------------------
+
+INCDIR=../inc/
+LIBDIR=../lib/
+BINDIR=../bin/
+
+INCPATH=-I../inc -I.
+
+ifndef SOEXT
+SOEXT = so
+endif
+
+MAIN_INCS=$(INCDIR)stdinc.h $(INCDIR)stdtp.h $(INCDIR)config.h \
+	$(INCDIR)support.h $(INCDIR)console.h $(INCDIR)convert.h \
+	$(INCDIR)procsock.h \
+	$(INCDIR)protocol.h $(INCDIR)sockio.h $(INCDIR)unisock.h \
+	$(INCDIR)task.h $(INCDIR)ctask.h $(INCDIR)ptask.h $(INCDIR)async.h \
+   $(INCDIR)osfile.h $(INCDIR)file.h $(INCDIR)bigbody.h
+CLIENT_INCS=$(MAIN_INCS) $(INCDIR)goods.h $(INCDIR)database.h \
+	$(INCDIR)object.h $(INCDIR)class.h $(INCDIR)wstring.h $(INCDIR)storage.h \
+	$(INCDIR)refs.h $(INCDIR)mop.h $(INCDIR)dbexcept.h
+SERVER_INCS=$(MAIN_INCS) server.h classmgr.h memmgr.h objmgr.h poolmgr.h \
+	transmgr.h mmapfile.h tconsole.h sockfile.h $(INCDIR)confgrtr.h
+EXTRA_INCS=$(INCDIR)dbscls.h $(INCDIR)rtree.h $(INCDIR)wwwapi.h $(INCDIR)qtree.h
+
+
+MAIN_OBJS=console.o procsock.o protocol.o sockio.o unisock.o unifile.o bigbody.o $(TASK_OBJ)
+SERVER_OBJS=classmgr.o memmgr.o objmgr.o poolmgr.o transmgr.o server.o \
+	multfile.o confgrtr.o tconsole.o sockfile.o
+CLIENT_OBJS=class.o client.o database.o dbscls.o rtree.o mop.o object.o \
+	wwwapi.o qtree.o
+
+LIBS=$(LIBDIR)libserver.a $(LIBDIR)libclient.a 
+SHRLIBS=$(LIBDIR)libserver.$(SOEXT) $(LIBDIR)libclient.$(SOEXT)
+SERVICES=$(BINDIR)goodsrv $(BINDIR)browser $(BINDIR)cgibrows $(BINDIR)javamop \
+	$(BINDIR)cgistub $(BINDIR)geturl $(BINDIR)puturl $(BINDIR)monitor \
+	$(BINDIR)garcc $(BINDIR)exporter $(BINDIR)exval
+
+
+all: ../bin ../lib $(LIBS) $(SERVICES) $(EXAMPLES)
+
+shared: $(SHRLIBS)
+
+../bin:
+	mkdir ../bin
+
+../lib:
+	mkdir ../lib
+
+console.o: console.cxx $(MAIN_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) console.cxx
+
+procsock.o: procsock.cxx $(MAIN_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) procsock.cxx
+
+protocol.o: protocol.cxx $(MAIN_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) protocol.cxx
+
+sockio.o: sockio.cxx $(MAIN_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) sockio.cxx
+
+unisock.o: unisock.cxx $(MAIN_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) unisock.cxx
+
+ptask.o: ptask.cxx $(MAIN_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) ptask.cxx
+
+ctask.o: ctask.cxx $(MAIN_INCS) 
+	$(CC) $(INCPATH) $(CFLAGS) ctask.cxx
+
+async.o: async.cxx $(MAIN_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) async.cxx
+
+bigbody.o: bigbody.cxx $(MAIN_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) bigbody.cxx
+
+
+
+unifile.o: unifile.cxx $(SERVER_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) unifile.cxx
+
+confgrtr.o: confgrtr.cxx $(SERVER_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) confgrtr.cxx
+
+multfile.o: multfile.cxx multfile.h $(SERVER_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) multfile.cxx
+
+classmgr.o: classmgr.cxx $(SERVER_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) classmgr.cxx
+
+memmgr.o: memmgr.cxx $(SERVER_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) memmgr.cxx
+
+objmgr.o: objmgr.cxx $(SERVER_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) objmgr.cxx
+
+poolmgr.o: poolmgr.cxx $(SERVER_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) poolmgr.cxx
+
+sockfile.o: sockfile.cxx $(SERVER_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) sockfile.cxx
+
+tconsole.o: tconsole.cxx $(SERVER_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) tconsole.cxx
+
+transmgr.o: transmgr.cxx $(SERVER_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) transmgr.cxx
+
+server.o: server.cxx $(SERVER_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) server.cxx
+
+
+
+object.o: object.cxx $(CLIENT_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) object.cxx
+
+class.o: class.cxx $(CLIENT_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) class.cxx
+
+mop.o: mop.cxx $(CLIENT_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) mop.cxx
+
+client.o: client.cxx client.h $(CLIENT_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) client.cxx
+
+database.o: database.cxx client.h $(CLIENT_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) database.cxx
+
+dbscls.o: dbscls.cxx $(INCDIR)dbscls.h $(CLIENT_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) dbscls.cxx
+
+qtree.o: qtree.cxx $(INCDIR)qtree.h $(CLIENT_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) qtree.cxx
+
+rtree.o: rtree.cxx $(INCDIR)rtree.h $(CLIENT_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) rtree.cxx
+
+wwwapi.o: wwwapi.cxx $(INCDIR)wwwapi.h $(CLIENT_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) wwwapi.cxx
+
+
+$(LIBDIR)libserver.a: $(MAIN_OBJS) $(SERVER_OBJS)
+	rm -f $(LIBDIR)libserver.a
+	$(AR) $(ARFLAGS) $(LIBDIR)libserver.a $(MAIN_OBJS) $(SERVER_OBJS)
+	$(RANLIB) $(LIBDIR)libserver.a
+
+$(LIBDIR)libclient.a: $(MAIN_OBJS) $(CLIENT_OBJS)
+	rm -f $(LIBDIR)libclient.a
+	$(AR) $(ARFLAGS) $(LIBDIR)libclient.a $(MAIN_OBJS) $(CLIENT_OBJS)
+	$(RANLIB) $(LIBDIR)libclient.a
+
+$(LIBDIR)libserver.$(SOEXT): $(MAIN_OBJS) $(SERVER_OBJS)
+	rm -f $(LIBDIR)libserver.$(SOEXT)
+	$(CC) $(SOFLAGS) -o $(LIBDIR)libserver.$(SOEXT) $(MAIN_OBJS) $(SERVER_OBJS)
+
+$(LIBDIR)libclient.$(SOEXT): $(MAIN_OBJS) $(CLIENT_OBJS)
+	rm -f $(LIBDIR)libclient.$(SOEXT)
+	$(CC) $(SOFLAGS) -o $(LIBDIR)libclient.$(SOEXT) $(MAIN_OBJS) $(CLIENT_OBJS)
+
+
+goodsrv.o: goodsrv.cxx $(SERVER_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) goodsrv.cxx
+
+$(BINDIR)goodsrv: goodsrv.o $(LIBDIR)libserver.a
+	$(LD) $(LDFLAGS) -o $(BINDIR)goodsrv goodsrv.o $(LIBDIR)libserver.a $(STDLIBS)
+
+
+browser.o: browser.cxx $(CLIENT_INCS) client.h
+	$(CC) $(INCPATH) $(CFLAGS) browser.cxx 
+
+$(BINDIR)browser: browser.o $(LIBDIR)libclient.a
+	$(LD) $(LDFLAGS) -o $(BINDIR)browser browser.o $(LIBDIR)libclient.a $(STDLIBS)
+
+exporter.o: exporter.cxx $(CLIENT_INCS) client.h
+	$(CC) $(INCPATH) $(CFLAGS) exporter.cxx 
+   
+$(BINDIR)exporter: exporter.o $(LIBDIR)libclient.a
+	$(LD) $(LDFLAGS) -o $(BINDIR)exporter exporter.o $(LIBDIR)libclient.a $(STDLIBS)
+
+cgibrows.o: cgibrows.cxx $(CLIENT_INCS) client.h
+	$(CC) $(INCPATH) $(CFLAGS) cgibrows.cxx 
+
+$(BINDIR)cgibrows: cgibrows.o $(LIBDIR)libclient.a
+	$(LD) $(LDFLAGS) -o $(BINDIR)cgibrows cgibrows.o $(LIBDIR)libclient.a $(STDLIBS)
+
+cgistub.o: cgistub.cxx $(CLIENT_INCS) $(INCDIR)wwwapi.h 
+	$(CC) $(INCPATH) $(CFLAGS) cgistub.cxx 
+
+$(BINDIR)cgistub: cgistub.o $(LIBDIR)libclient.a
+	$(LD) $(LDFLAGS) -o $(BINDIR)cgistub cgistub.o $(LIBDIR)libclient.a $(STDLIBS)
+
+garcc.o: garcc.cxx $(CLIENT_INCS) client.h
+	$(CC) $(INCPATH) $(CFLAGS) garcc.cxx 
+
+$(BINDIR)garcc: garcc.o $(LIBDIR)libclient.a
+	$(LD) $(LDFLAGS) -o $(BINDIR)garcc garcc.o $(LIBDIR)libclient.a $(STDLIBS)
+
+geturl.o: geturl.cxx $(CLIENT_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) geturl.cxx 
+
+$(BINDIR)geturl: geturl.o $(LIBDIR)libclient.a
+	$(LD) $(LDFLAGS) -o $(BINDIR)geturl geturl.o $(LIBDIR)libclient.a $(STDLIBS)
+
+puturl.o: puturl.cxx $(CLIENT_INCS)
+	$(CC) $(INCPATH) $(CFLAGS) puturl.cxx 
+
+$(BINDIR)puturl: puturl.o $(LIBDIR)libclient.a
+	$(LD) $(LDFLAGS) -o $(BINDIR)puturl puturl.o $(LIBDIR)libclient.a $(STDLIBS)
+
+
+javamop.o: javamop.cxx javamop.h javamop.d
+	$(CC) $(CFLAGS) javamop.cxx
+
+$(BINDIR)javamop: javamop.o
+	$(LD) $(LDFLAGS) -o $(BINDIR)javamop javamop.o
+
+monitor.o: monitor.cxx monitor.h $(MAIN_INCS)
+	$(CC)  $(INCPATH) $(CFLAGS) monitor.cxx
+
+$(BINDIR)monitor: monitor.o $(LIBDIR)libserver.a
+	$(LD) $(LDFLAGS) -o $(BINDIR)monitor monitor.o $(LIBDIR)libserver.a $(STDLIBS)
+
+exval.o: exval.cxx $(CLIENT_INCS) client.h
+	$(CC) $(INCPATH) $(CFLAGS) exval.cxx 
+
+$(BINDIR)exval: exval.o $(LIBDIR)libclient.a
+	$(LD) $(LDFLAGS) -o $(BINDIR)exval exval.o $(LIBDIR)libclient.a $(STDLIBS)
+
+
+
+clean:
+	rm -fr *.o core *~ ../inc/*~ cxx_repository
+
+install: $(LIBS) $(SERVICES)
+	mkdir -p $(LIB_INSTALL_PATH) 
+	cp $(LIBDIR)* $(LIB_INSTALL_PATH)
+	mkdir -p $(BIN_INSTALL_PATH) 
+	cp $(BINDIR)* $(BIN_INSTALL_PATH)
+	mkdir -p $(INC_INSTALL_PATH) 
+	cp $(INCDIR)* $(INC_INSTALL_PATH)
+
