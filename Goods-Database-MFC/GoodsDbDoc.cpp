@@ -13,7 +13,7 @@
 #endif
 
 #include "GoodsDbDoc.h"
-
+#include "ordersDB.h"
 #include <propkey.h>
 
 #ifdef _DEBUG
@@ -30,7 +30,11 @@ END_MESSAGE_MAP()
 // CGoodsDbDoc construction/destruction
 
 CGoodsDbDoc::CGoodsDbDoc() noexcept {
-  // TODO: add one-time construction code here
+	number = 0;
+	dbThread = NULL;
+	//dbManager = DB_MANAGER;
+	dbThread = AfxBeginThread(dbTaskThread, this);
+	//dbManager->connect();
 }
 
 CGoodsDbDoc::~CGoodsDbDoc() {}
@@ -41,7 +45,6 @@ BOOL CGoodsDbDoc::OnNewDocument() {
 
   // TODO: add reinitialization code here
   // (SDI documents will reuse this document)
-
   return TRUE;
 }
 
@@ -112,3 +115,26 @@ void CGoodsDbDoc::Dump(CDumpContext &dc) const { CDocument::Dump(dc); }
 #endif //_DEBUG
 
 // CGoodsDbDoc commands
+
+void CGoodsDbDoc::addUser(CString name, CString email, CString password) {
+	//dbManager->executeAction();
+	//dbManager->addPerson();
+}
+
+void CGoodsDbDoc::printAllUser() const {
+
+}
+
+void CGoodsDbDoc::deleteUser(CString email) {
+
+}
+
+UINT dbTaskThread(LPVOID param) {
+	CGoodsDbDoc *ptrDB = static_cast<CGoodsDbDoc*>(param);
+	ptrDB->dbManager->connect();
+	while (ptrDB->dbManager->isSessionOpened()) {
+		Sleep(1000);
+		ptrDB->number++;
+	}
+	return 0;
+}

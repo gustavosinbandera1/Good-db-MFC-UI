@@ -87,10 +87,10 @@
     <ClInclude Include="ordersDB.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="application.h">
+    <ClInclude Include="database-guard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="database-guard.h">
+    <ClInclude Include="dbManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -158,10 +158,10 @@
     <ClCompile Include="ordersDB.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="application.cpp">
+    <ClCompile Include="database-guard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="database-guard.cpp">
+    <ClCompile Include="dbManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

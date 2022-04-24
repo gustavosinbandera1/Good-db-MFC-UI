@@ -1,14 +1,19 @@
 #pragma once
 #include "resource.h" // main symbols
+#include "dbManager.h"  //database application
 
-#include "rootObject.h"
+
+UINT MyThread(LPVOID param);
+
 
 class CGoodsDbApp : public CWinAppEx {
 public:
   CGoodsDbApp() noexcept;
+  ~CGoodsDbApp();
   CMultiDocTemplate *pTabbedView;
 
-  ref<RootObject>  root;
+  int number;
+  CWinThread *thread;
 
   // Overrides
 public:

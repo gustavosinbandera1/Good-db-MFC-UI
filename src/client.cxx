@@ -584,8 +584,7 @@ boolean dbs_client_storage::open(const char* server_connection_name, const char*
     if (!sock->is_ok()) { 
         msg_buf buf;
         sock->get_error_text(buf, sizeof buf);
-        console::output("Failed to connect server '%s': %s\n", 
-                         server_connection_name, buf);
+		console::output("Failed to connect server '%s': %s\n",server_connection_name, buf);
         delete sock;
         sock = NULL; 
         return False;

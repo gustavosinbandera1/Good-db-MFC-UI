@@ -14,8 +14,6 @@
 #include "GoodsDBView.h"
 #include "tabViewCtrlView.h"
 
-
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -32,6 +30,10 @@ END_MESSAGE_MAP()
 // CGoodsDbApp construction
 
 CGoodsDbApp::CGoodsDbApp() noexcept {
+	number = 0;
+	thread = NULL;
+	thread = AfxBeginThread(MyThread, this);
+	//AfxMessageBox(CString("Hola")); // login here "should be"
   m_bHiColorIcons = TRUE;
 
   // support Restart Manager
@@ -54,6 +56,13 @@ CGoodsDbApp::CGoodsDbApp() noexcept {
   // Place all significant initialization in InitInstance
 
 
+}
+
+CGoodsDbApp::~CGoodsDbApp() {
+	number = 101;
+	if (thread != NULL) {
+		::WaitForSingleObject(thread, 0xFFFFFF);
+	}
 }
 
 // The one and only CGoodsDbApp object
@@ -102,8 +111,6 @@ BOOL CGoodsDbApp::InitInstance() {
   AddDocTemplate(pTabbedDocTmplt);
 
 
-
-
   // create main MDI Frame window
   CMainFrame *pMainFrame = new CMainFrame;
   if (!pMainFrame || !pMainFrame->LoadFrame(IDR_MAINFRAME)) {
@@ -113,6 +120,8 @@ BOOL CGoodsDbApp::InitInstance() {
   m_pMainWnd = pMainFrame;
 
   m_pMainWnd->DragAcceptFiles();
+
+
 
   // Parse command line for standard shell commands, DDE, file open
   CCommandLineInfo cmdInfo;
@@ -130,6 +139,7 @@ BOOL CGoodsDbApp::InitInstance() {
   pMainFrame->ShowWindow(m_nCmdShow);
   pMainFrame->UpdateWindow();
 
+  //DB_MANAGER->connect();
   return TRUE;
 }
 
@@ -189,3 +199,12 @@ void CGoodsDbApp::LoadCustomState() {}
 void CGoodsDbApp::SaveCustomState() {}
 
 // CGoodsDbApp message handlers
+
+UINT MyThread(LPVOID param) {
+	CGoodsDbApp *ptr = static_cast<CGoodsDbApp*>(param);
+	while (ptr->number < 100) {
+		Sleep(1000);
+		ptr->number++;
+	}
+	return 0;
+}

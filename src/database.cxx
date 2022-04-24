@@ -726,7 +726,7 @@ boolean database::open(const char* database_configuration_file, const char* logi
 
     if (cfg == NULL) { 
         console::output("Failed to open database configuration file: '%s'\n", 
-                         database_configuration_file);
+                        database_configuration_file);
         return False;
     }
     if (fgets(buf, sizeof buf, cfg) == NULL 
@@ -752,11 +752,19 @@ boolean database::open(const char* database_configuration_file, const char* logi
                                     "%s", buf);
                 }
                 storages[i] = create_obj_storage(i);
-                if (!storages[i]->open(hostname, login, password)) { 
-                    fclose(cfg);
-                    close();
-                    return False;
-                }
+				if (storages[i] != NULL) {
+					if (!storages[i]->open("localhost:6110", login, password)) {
+						fclose(cfg);
+						close();
+						return False;
+					}
+				}
+				else {
+
+					console::output("Storage is null ");
+				}
+
+				
             }
         }
     }
@@ -852,7 +860,7 @@ void database::disconnected(stid_t sid)
 
 void database::login_refused(stid_t sid)
 {
-    console::error("Authorization procedure fails at server %d\n", sid);
+    //console::error("Authorization procedure fails at server %d\n", sid);
 }
 
 void database::add_user(char const* login, char const* password)

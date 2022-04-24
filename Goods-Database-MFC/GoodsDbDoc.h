@@ -4,6 +4,8 @@
 
 #pragma once
 
+UINT dbTaskThread(LPVOID param);
+
 class CGoodsDbDoc : public CDocument {
 protected: // create from serialization only
   CGoodsDbDoc() noexcept;
@@ -12,8 +14,13 @@ protected: // create from serialization only
   // Attributes
 public:
   // Operations
+	
 public:
   // Overrides
+	//ref<OrdersDB>   ordersDb;
+	DatabaseManager *dbManager;
+	CWinThread *dbThread;
+	int number;
 public:
   virtual BOOL OnNewDocument();
   virtual void Serialize(CArchive &ar);
@@ -29,7 +36,28 @@ public:
   virtual void AssertValid() const;
   virtual void Dump(CDumpContext &dc) const;
 #endif
+  void addDemoPeople(void);
+  void addDemoProducts(void);
+  void addDemoOrders(void);
 
+  void addUser(CString name, CString email, CString password);
+  void printAllUser() const;
+  void deleteUser(CString email);
+
+  void addProduct();
+  void printAllProduct();
+  void deleteProduct();
+
+  void addOrder();
+  void printAllOrders();
+  void printOrder();
+  void deleteOrder();
+
+  void addDetail();
+  void addDetail(char const* orderId, char const* productSku, int quantity);
+  void addDetail(ref<Order> order, char const* productSku, int quantity);
+  void deleteDetail(char const* orderId, char const* detailId);
+  void deleteDetail();
 protected:
   // Generated message map functions
 protected:
