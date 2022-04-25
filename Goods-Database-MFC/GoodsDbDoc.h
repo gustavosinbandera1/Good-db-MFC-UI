@@ -4,23 +4,16 @@
 
 #pragma once
 
-UINT dbTaskThread(LPVOID param);
+//UINT dbTaskThread(LPVOID param);
 
 class CGoodsDbDoc : public CDocument {
 protected: // create from serialization only
   CGoodsDbDoc() noexcept;
   DECLARE_DYNCREATE(CGoodsDbDoc)
 
-  // Attributes
-public:
-  // Operations
-	
-public:
-  // Overrides
-	//ref<OrdersDB>   ordersDb;
+private:
 	DatabaseManager *dbManager;
-	CWinThread *dbThread;
-	int number;
+
 public:
   virtual BOOL OnNewDocument();
   virtual void Serialize(CArchive &ar);
@@ -44,7 +37,7 @@ public:
   void printAllUser() const;
   void deleteUser(CString email);
 
-  void addProduct();
+  void addProduct(CString description, double price, double weight);
   void printAllProduct();
   void deleteProduct();
 

@@ -44,12 +44,28 @@
 #define ID_VIEW_APPLOOK_WINDOWS_7       219
 #define IDS_EDIT_MENU                   306
 #define IDR_MENU_USER                   316
+#define IDD_ADD_EDIT_USER               317
+#define IDD_ADD_EDIT_PRODUCT            319
 #define IDC_LIST_USER                   1002
 #define IDC_LIST1                       1003
 #define IDC_BUTTON1                     1004
 #define IDC_BUTTON2                     1005
 #define IDC_BUTTON3                     1006
 #define IDC_COMBO1                      1007
+#define IDC_NAME                        1008
+#define IDC_EMAIL                       1009
+#define IDC_ADD_USER                    1009
+#define IDC_PASSWORD                    1010
+#define IDC_EDIT_USER                   1010
+#define IDC_PASSWORD_R                  1011
+#define IDC_DELETE_USER                 1011
+#define IDC_SKU                         1012
+#define IDC_DESCRIPTION                 1013
+#define IDC_ADD_PRODUCT                 1013
+#define IDC_PRICE                       1014
+#define IDC_EDIT_PRODUCT                1014
+#define IDC_WEIGHT                      1015
+#define IDC_DELETE_PRODUCT              1015
 #define ID_USER_ADD                     32774
 #define ID_USER_EDIT                    32775
 #define ID_USER_DELETE                  32776
@@ -59,9 +75,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        317
+#define _APS_NEXT_RESOURCE_VALUE        321
 #define _APS_NEXT_COMMAND_VALUE         32778
-#define _APS_NEXT_CONTROL_VALUE         1008
+#define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

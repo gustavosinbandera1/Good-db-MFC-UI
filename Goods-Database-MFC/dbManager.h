@@ -19,6 +19,13 @@ private:
 	DatabaseManager(const DatabaseManager &);
 	DatabaseManager &operator=(const DatabaseManager &);
 	
+	/*
+	Can more than one thread within the same application access this resource at one time 
+	(for example, your application allows up to five windows with views on the same document)?
+	If yes, use CSemaphore.
+	*/
+	CSemaphore c_sema;
+	CCriticalSection c_cs;
 public:
 
 	// This is how clients can access the single instance
@@ -32,7 +39,7 @@ public:
 	void printAllPerson() const;
 	void deletePerson();
 
-	void addProduct();
+	void addProduct(CString desc, double price, double weight);
 	void printAllProduct();
 	void deleteProduct();
 
@@ -48,7 +55,6 @@ public:
 	void deleteDetail();
 	void quit();
 
-
 protected:
 	mutex           cs;
 	database        db;
@@ -60,7 +66,7 @@ protected:
 	boolean insertDetail(char const* orderID, ref<Detail> detail);
 	static void task_proc start_update_process(void* arg);
 public:
-	int connect();
+	boolean connect();
 	Actions actions;
 	boolean executeAction(std::string action);
 	inline boolean isSessionOpened() { return session_opened; }

@@ -8,6 +8,7 @@ protected:
   virtual ~CTabViewCtrlView();
 
 public:
+	CMFCTabCtrl tab_ctrl;
 #ifdef _DEBUG
   virtual void AssertValid() const;
 #ifndef _WIN32_WCE

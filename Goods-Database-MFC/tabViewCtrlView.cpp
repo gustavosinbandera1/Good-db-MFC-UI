@@ -31,7 +31,7 @@ int CTabViewCtrlView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   CRect rect;
   rect.SetRectEmpty();
 
-  CMFCTabCtrl tab_ctrl;
+  //CMFCTabCtrl tab_ctrl;
   tab_ctrl.DestroyWindow();
 
   // creates the tab control and attaches it to the CMFCTabCtrl object

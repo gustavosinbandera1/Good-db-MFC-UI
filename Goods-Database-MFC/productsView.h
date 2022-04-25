@@ -1,10 +1,15 @@
 #pragma once
 // ProductsView form view
+#include <memory>
+
+class CGoodsDbDoc;
+class ProductView;
 
 class ProductsView : public CFormView
 {
 	DECLARE_DYNCREATE(ProductsView)
-
+private:
+	std::unique_ptr<ProductView> m_productView;
 protected:
 	ProductsView();           // protected constructor used by dynamic creation
 	virtual ~ProductsView();
@@ -20,10 +25,15 @@ public:
 #endif
 #endif
 
+public: 
+	CGoodsDbDoc* GetDocument() const;
+	void productViewDeleted(ProductView *productview);
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedAddProduct();
 };
 
 

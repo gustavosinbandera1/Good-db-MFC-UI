@@ -2,9 +2,9 @@
 #include "database-guard.h"
 #include "dbManager.h"
 
-#define QUERY_CONFIG                                                           \
-  "C:\\Users\\gusta\\source\\repos\\Goods-Database-MFC\\orders-config.cfg"
-//"C:\\Users\\gusta\\Documents\\server-config-dbs\\orders-config.cfg"
+#define QUERY_CONFIG \
+"C:\\Users\\gusta\\Documents\\server-config-dbs\\orders-config.cfg"
+//"C:\\Users\\gusta\\Documents\\server-config-dbs\\orders-config.cfg"  
 
 char buf[6][256];
 
@@ -18,20 +18,6 @@ DatabaseManager *DatabaseManager::getInstance() {
 }
 //----------------------------------------------------
 DatabaseManager::DatabaseManager() {
-  actions.emplace("addPerson", [this](void) { this->addPerson(CString(""), CString(""), CString("")); });
-  actions.emplace("printPersons", [this](void) { this->printAllPerson(); });
-  actions.emplace("deletePerson", [this](void) { this->deletePerson(); });
-  actions.emplace("addProduct", [this](void) { this->addProduct(); });
-  actions.emplace("printProducts", [this](void) { this->printAllProduct(); });
-  actions.emplace("deleteProduct", [this](void) { this->deleteProduct(); });
-  actions.emplace("addOrder", [this](void) { this->addOrder(); });
-  actions.emplace("deleteOrder", [this](void) { this->deleteOrder(); });
-  actions.emplace("printOrder", [this](void) { this->printOrder(); });
-  actions.emplace("printOrders", [this](void) { this->printAllOrders(); });
-  actions.emplace("addDetail", [this](void) { this->addDetail(); });
-  actions.emplace("deleteDetail", [this](void) { this->deleteDetail(); });
-  actions.emplace("quit", [this](void) { this->quit(); });
-  actions.emplace("Z", [this](void) { this->populateData(); });
 }
 //----------------------------------------------------
 void DatabaseManager::addDemoPeople() {
@@ -172,11 +158,8 @@ void DatabaseManager::deletePerson() {
   modify(root)->removePerson(buf[0]);
 }
 //----------------------------------------------------
-void DatabaseManager::addProduct() {
-  //input("Description: ", buf[0], sizeof buf[0]);
-  //input("Price: ", buf[1], sizeof buf[1]);
-  //input("Weight: ", buf[2], sizeof buf[2]);
-  modify(root)->addProduct(buf[0], std::stod(buf[1]), std::stod(buf[2]));
+void DatabaseManager::addProduct(CString desc, double price, double weight) {
+  modify(root)->addProduct(CT2A(desc), price, weight );
 }
 //----------------------------------------------------
 void DatabaseManager::printAllProduct() { ordersDb->printAllProducts(); }
@@ -312,7 +295,7 @@ void DatabaseManager::update() {
   }
 }
 //----------------------------------------------------
-int DatabaseManager::connect() {
+boolean DatabaseManager::connect() {
   task::initialize(task::huge_stack);
 
   if (database_guard _{this->db, QUERY_CONFIG}) {
@@ -322,15 +305,11 @@ int DatabaseManager::connect() {
     this->root->initialize();
     this->ordersDb = root->db;
 	task::create(start_update_process, this);
-	while (session_opened) {
-		Sleep(300);
-	}
-    // dialogue();
   } else {
     AfxMessageBox(_T("Failed to connect server"));
-	return 0;
+	return FALSE;
   }
-  return 1;
+  return TRUE;
 }
 //----------------------------------------------------
 boolean DatabaseManager::executeAction(std::string action) {

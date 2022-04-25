@@ -27,17 +27,13 @@ IMPLEMENT_DYNCREATE(CGoodsDbDoc, CDocument)
 BEGIN_MESSAGE_MAP(CGoodsDbDoc, CDocument)
 END_MESSAGE_MAP()
 
-// CGoodsDbDoc construction/destruction
 
 CGoodsDbDoc::CGoodsDbDoc() noexcept {
-	number = 0;
-	dbThread = NULL;
-	//dbManager = DB_MANAGER;
-	dbThread = AfxBeginThread(dbTaskThread, this);
-	//dbManager->connect();
+	dbManager = DB_MANAGER;
 }
 
 CGoodsDbDoc::~CGoodsDbDoc() {}
+
 
 BOOL CGoodsDbDoc::OnNewDocument() {
   if (!CDocument::OnNewDocument())
@@ -117,8 +113,8 @@ void CGoodsDbDoc::Dump(CDumpContext &dc) const { CDocument::Dump(dc); }
 // CGoodsDbDoc commands
 
 void CGoodsDbDoc::addUser(CString name, CString email, CString password) {
-	//dbManager->executeAction();
-	//dbManager->addPerson();
+	dbManager->addPerson(name, email, password);
+	AfxMessageBox(CString("User saved"));
 }
 
 void CGoodsDbDoc::printAllUser() const {
@@ -129,12 +125,14 @@ void CGoodsDbDoc::deleteUser(CString email) {
 
 }
 
-UINT dbTaskThread(LPVOID param) {
-	CGoodsDbDoc *ptrDB = static_cast<CGoodsDbDoc*>(param);
-	ptrDB->dbManager->connect();
-	while (ptrDB->dbManager->isSessionOpened()) {
-		Sleep(1000);
-		ptrDB->number++;
-	}
-	return 0;
+void CGoodsDbDoc::addProduct(CString description, double price, double weight) {
+	dbManager->addProduct(description, price, weight);
+}
+
+void CGoodsDbDoc::printAllProduct() {
+
+}
+
+void CGoodsDbDoc::deleteProduct() {
+
 }

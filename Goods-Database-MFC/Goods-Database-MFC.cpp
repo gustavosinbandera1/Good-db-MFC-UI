@@ -30,11 +30,10 @@ END_MESSAGE_MAP()
 // CGoodsDbApp construction
 
 CGoodsDbApp::CGoodsDbApp() noexcept {
-	number = 0;
-	thread = NULL;
-	thread = AfxBeginThread(MyThread, this);
+	//number = 0;
+	//thread = NULL;
 	//AfxMessageBox(CString("Hola")); // login here "should be"
-  m_bHiColorIcons = TRUE;
+    m_bHiColorIcons = TRUE;
 
   // support Restart Manager
   m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_ALL_ASPECTS;
@@ -54,15 +53,14 @@ CGoodsDbApp::CGoodsDbApp() noexcept {
 
   // TODO: add construction code here,
   // Place all significant initialization in InitInstance
-
-
+  //thread = AfxBeginThread(MyThread, this);
 }
 
 CGoodsDbApp::~CGoodsDbApp() {
-	number = 101;
+	/*number = 101;
 	if (thread != NULL) {
 		::WaitForSingleObject(thread, 0xFFFFFF);
-	}
+	}*/
 }
 
 // The one and only CGoodsDbApp object
@@ -139,7 +137,10 @@ BOOL CGoodsDbApp::InitInstance() {
   pMainFrame->ShowWindow(m_nCmdShow);
   pMainFrame->UpdateWindow();
 
-  //DB_MANAGER->connect();
+  threadConnection = AfxBeginThread(task_Thread, this);
+
+  //thread = AfxBeginThread(MyThread, this);
+ // DB_MANAGER->connect();
   return TRUE;
 }
 
@@ -198,13 +199,22 @@ void CGoodsDbApp::LoadCustomState() {}
 
 void CGoodsDbApp::SaveCustomState() {}
 
+void CGoodsDbApp::taskThread(void) {
+	DB_MANAGER->connect();
+	CMDIFrameWnd *pFrame = (CMDIFrameWnd*)AfxGetApp()->GetMainWnd();
+	CWnd* pWndMain = AfxGetMainWnd();
+	
+	while (true) {
+		Sleep(1000);
+		number++;
+		if (number >= 255) number = 0;
+	}
+}
+
 // CGoodsDbApp message handlers
 
-UINT MyThread(LPVOID param) {
-	CGoodsDbApp *ptr = static_cast<CGoodsDbApp*>(param);
-	while (ptr->number < 100) {
-		Sleep(1000);
-		ptr->number++;
-	}
+UINT task_Thread(LPVOID param) {
+	static_cast<CGoodsDbApp*>(param)->taskThread();
 	return 0;
 }
+

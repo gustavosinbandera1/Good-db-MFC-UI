@@ -93,6 +93,12 @@
     <ClInclude Include="dbManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="userView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="productView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Goods-Database-MFC.cpp">
@@ -162,6 +168,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dbManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="userView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="productView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

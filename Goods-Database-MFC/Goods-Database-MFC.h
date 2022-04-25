@@ -3,25 +3,24 @@
 #include "dbManager.h"  //database application
 
 
-UINT MyThread(LPVOID param);
+static UINT task_Thread(LPVOID param);
 
 
 class CGoodsDbApp : public CWinAppEx {
 public:
   CGoodsDbApp() noexcept;
   ~CGoodsDbApp();
-  CMultiDocTemplate *pTabbedView;
 
   int number;
-  CWinThread *thread;
+  CWinThread *threadConnection;
+  void taskThread(void);
 
   // Overrides
 public:
   virtual BOOL InitInstance();
   virtual int ExitInstance();
-
+  
   CMultiDocTemplate *pTabbedDocTmplt;
-  CMultiDocTemplate *pDocTemplate;
 
   // Implementation
   UINT m_nAppLook;

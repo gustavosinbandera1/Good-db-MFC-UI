@@ -3,6 +3,7 @@
 #include "pch.h"
 #include <string>
 
+
 class database_guard final {
 public:
 	database_guard(database &db, std::string const &config_file)
@@ -10,7 +11,7 @@ public:
 		task::initialize(task::normal_stack);
 		m_opened = m_db.open(config_file.c_str());
 	}
-	~database_guard() { m_db.close(); }
+	~database_guard() { /*m_db.close();*/ }
 
 	operator bool() const { return m_opened; }
 private:

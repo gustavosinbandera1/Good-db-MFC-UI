@@ -215,6 +215,7 @@
     <ClInclude Include="person.h" />
     <ClInclude Include="product.h" />
     <ClInclude Include="productsView.h" />
+    <ClInclude Include="productView.h" />
     <ClInclude Include="PropertiesWnd.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="rootObject.h" />
@@ -223,6 +224,7 @@
     <ClInclude Include="tabViewCtrlView.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="usersView.h" />
+    <ClInclude Include="userView.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="address.cpp" />
@@ -247,12 +249,14 @@
     <ClCompile Include="person.cpp" />
     <ClCompile Include="product.cpp" />
     <ClCompile Include="productsView.cpp" />
+    <ClCompile Include="productView.cpp" />
     <ClCompile Include="PropertiesWnd.cpp" />
     <ClCompile Include="rootObject.cpp" />
     <ClCompile Include="setMember.cpp" />
     <ClCompile Include="small_set.cpp" />
     <ClCompile Include="tabViewCtrlView.cpp" />
     <ClCompile Include="usersView.cpp" />
+    <ClCompile Include="userView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Goods-Database-MFC.reg" />

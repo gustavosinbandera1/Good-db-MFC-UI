@@ -19,5 +19,7 @@
 /*pre compiled header might be in this order to avoid MFC conflicts */
 #include "dbscls.h"
 #include "goods.h"
+#include <afxcontrolbars.h>
+#include <afxcontrolbars.h>
 
 #endif //PCH_H
