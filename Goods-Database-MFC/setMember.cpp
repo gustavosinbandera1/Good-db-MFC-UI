@@ -1,10 +1,12 @@
 #include "pch.h"
 #include "setMember.h"
-
+#include <vector>
 
 void SetMember::print(void const *) const { console::output("testing here.."); }
 
+
 boolean SetMember::select(void const *) const { return False; }
+
 
 void SetMember::selectTrampoline(ref<set_member> mbr, void const *arg) {
 	ref<SetMember> obj = mbr->obj;

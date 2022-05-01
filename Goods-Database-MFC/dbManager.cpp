@@ -9,15 +9,22 @@
 char buf[6][256];
 
 // Define the static Singleton pointer
-DatabaseManager *DatabaseManager::inst_ = NULL;
+DatabaseManager *DatabaseManager::_inst = NULL;
+
 DatabaseManager *DatabaseManager::getInstance() {
-  if (inst_ == NULL) {
-    inst_ = new DatabaseManager();
+  if (_inst == NULL) {
+    _inst = new DatabaseManager();
   }
-  return (inst_);
+  return (_inst);
 }
 //----------------------------------------------------
 DatabaseManager::DatabaseManager() {
+}
+//----------------------------------------------------
+DatabaseManager::~DatabaseManager() {
+	if (_inst != NULL) {
+		delete _inst;
+	}
 }
 //----------------------------------------------------
 void DatabaseManager::addDemoPeople() {
@@ -151,6 +158,10 @@ void DatabaseManager::addPerson(CString name, CString email, CString password) {
 //----------------------------------------------------
 void DatabaseManager::printAllPerson() const { 
 	ordersDb->printAllPersons(); 
+}
+
+large_set<Person> DatabaseManager::getAllPerson() const {
+	return ordersDb->getPersonList();
 }
 //----------------------------------------------------
 void DatabaseManager::deletePerson() {
@@ -300,7 +311,7 @@ boolean DatabaseManager::connect() {
 
   if (database_guard _{this->db, QUERY_CONFIG}) {
     session_opened = True;
-    AfxMessageBox(CString("Connection success"));
+    //AfxMessageBox(CString("Connection success"));
     this->db.get_root(root);
     this->root->initialize();
     this->ordersDb = root->db;

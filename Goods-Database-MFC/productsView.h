@@ -24,16 +24,16 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 #endif
+protected:
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	DECLARE_MESSAGE_MAP()
 
 public: 
 	CGoodsDbDoc* GetDocument() const;
 	void productViewDeleted(ProductView *productview);
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
-	DECLARE_MESSAGE_MAP()
-public:
 	afx_msg void OnBnClickedAddProduct();
+
+	virtual void OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
 };
 
 

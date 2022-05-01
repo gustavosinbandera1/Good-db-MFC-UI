@@ -36,6 +36,7 @@ public:
   void addUser(CString name, CString email, CString password);
   void printAllUser() const;
   void deleteUser(CString email);
+  large_set<Person> getAllUser();
 
   void addProduct(CString description, double price, double weight);
   void printAllProduct();

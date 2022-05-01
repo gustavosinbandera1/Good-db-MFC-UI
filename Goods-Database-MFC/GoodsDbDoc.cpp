@@ -39,8 +39,6 @@ BOOL CGoodsDbDoc::OnNewDocument() {
   if (!CDocument::OnNewDocument())
     return FALSE;
 
-  // TODO: add reinitialization code here
-  // (SDI documents will reuse this document)
   return TRUE;
 }
 
@@ -118,12 +116,19 @@ void CGoodsDbDoc::addUser(CString name, CString email, CString password) {
 }
 
 void CGoodsDbDoc::printAllUser() const {
+	dbManager->printAllPerson();
+	//DB_MANAGER->printAllPerson();
+}
 
+large_set<Person> CGoodsDbDoc::getAllUser() {
+	return dbManager->getAllPerson();
 }
 
 void CGoodsDbDoc::deleteUser(CString email) {
 
 }
+
+
 
 void CGoodsDbDoc::addProduct(CString description, double price, double weight) {
 	dbManager->addProduct(description, price, weight);

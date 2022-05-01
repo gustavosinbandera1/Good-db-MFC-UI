@@ -13,7 +13,9 @@
 
 IMPLEMENT_DYNCREATE(ProductsView, CFormView)
 
-ProductsView::ProductsView() : CFormView(IDD_FORM_PRODUCT) {}
+ProductsView::ProductsView() : CFormView(IDD_FORM_PRODUCT) {
+	//AfxMessageBox(CString("drawing PRODUCTS VIEW"));
+}
 
 ProductsView::~ProductsView() {}
 
@@ -43,28 +45,32 @@ void ProductsView::productViewDeleted(ProductView * productview) {
 	}
 }
 
+void ProductsView::OnBnClickedAddProduct() {
+	CGoodsDbDoc *pDoc = GetDocument();
+	if (pDoc != NULL) {
+		m_productView = std::make_unique<ProductView>(false, this);
+
+		/*FIRST WAY*/
+		/*if (m_productView->DoModal() == IDOK) {
+			AfxMessageBox(CString("do modal ok"));
+		}*/
+
+		/*SECOND WAY !! MODAL LESS*/
+		m_productView->Create(IDD_ADD_EDIT_PRODUCT, this);
+		m_productView->ShowWindow(SW_SHOW);
+	}
+	else {
+		AfxMessageBox(CString("There isn't document to perform the task "));
+	}
+}
+
 
 CGoodsDbDoc * ProductsView::GetDocument() const {
 	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CGoodsDbDoc)));
 	return (CGoodsDbDoc *)m_pDocument;
 }
 
-void ProductsView::OnBnClickedAddProduct() {
-	CGoodsDbDoc *pDoc = GetDocument();
-	if (pDoc != NULL) {
-		m_productView = std::make_unique<ProductView>(this);
-
-		/*FIRST WAY*/
-		if (m_productView->DoModal() == IDOK) {
-			AfxMessageBox(CString("do modal ok"));
-		}
-
-		/*SECOND WAY !! MODAL LESS*/
-		//m_productView->Create(IDD_FORM_PRODUCT, this);
-		//m_productView->ShowWindow(SW_SHOW);
-		AfxMessageBox(CString("There isn' -------------- "));
-	}
-	else {
-		AfxMessageBox(CString("There isn't document to perform the task "));
-	}
+void ProductsView::OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/) {
+	//AfxMessageBox(CString("Update from document to Products view"));
+	// TODO: Add your specialized code here and/or call the base class
 }

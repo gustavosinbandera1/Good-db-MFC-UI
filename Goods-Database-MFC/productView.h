@@ -6,11 +6,18 @@ class ProductView : public CDialogEx {
   DECLARE_DYNAMIC(ProductView)
 
 private:
-	ProductsView* m_parent;
 	virtual void PostNcDestroy();
 
+private:
+	int m_sku;
+	CString m_description;
+	double m_price;
+	double m_weight;
+	bool readOnly;
+	ProductsView* m_parent;
+
 public:
-  ProductView(CWnd *pParent = nullptr); // standard constructor
+  ProductView(bool read_only = false, CWnd *pParent = nullptr); // standard constructor
   virtual ~ProductView();
 
 // Dialog Data
@@ -23,9 +30,6 @@ protected:
 
   DECLARE_MESSAGE_MAP()
 public:
-	int m_sku;
-	CString m_description;
-	double m_price;
-	double m_weight;
 	afx_msg void OnBnClickedOk();
+	virtual BOOL OnInitDialog();
 };

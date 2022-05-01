@@ -95,20 +95,22 @@ BOOL CGoodsDbApp::InitInstance() {
   CMFCToolTipInfo ttParams;
   ttParams.m_bVislManagerTheme = TRUE;
   theApp.GetTooltipManager()->SetTooltipParams(
-      AFX_TOOLTIP_TYPE_ALL, RUNTIME_CLASS(CMFCToolTipCtrl), &ttParams);
-
-
-
+	  AFX_TOOLTIP_TYPE_ALL, RUNTIME_CLASS(CMFCToolTipCtrl), &ttParams);
+  
 
   pTabbedDocTmplt = new CMultiDocTemplate(
       IDR_GoodsDatabaseMFCTYPE, RUNTIME_CLASS(CGoodsDbDoc),
       RUNTIME_CLASS(CChildFrame), // custom MDI child frame
-      RUNTIME_CLASS(CTabViewCtrlView));
+	  RUNTIME_CLASS(CTabViewCtrlView));
   if (!pTabbedDocTmplt)
     return FALSE;
   AddDocTemplate(pTabbedDocTmplt);
 
+  DB_MANAGER->connect();
 
+  //JUST FOR TESTING
+  //POSITION x = pTabbedDocTmplt->GetFirstDocPosition();
+ 
   // create main MDI Frame window
   CMainFrame *pMainFrame = new CMainFrame;
   if (!pMainFrame || !pMainFrame->LoadFrame(IDR_MAINFRAME)) {
@@ -117,30 +119,32 @@ BOOL CGoodsDbApp::InitInstance() {
   }
   m_pMainWnd = pMainFrame;
 
-  m_pMainWnd->DragAcceptFiles();
+  //m_pMainWnd->DragAcceptFiles();
 
+  pMainFrame->MDIGetActive();
 
-
-  // Parse command line for standard shell commands, DDE, file open
+  //// Parse command line for standard shell commands, DDE, file open
   CCommandLineInfo cmdInfo;
   ParseCommandLine(cmdInfo);
 
-  // Enable DDE Execute open
+  //// Enable DDE Execute open
   EnableShellOpen();
   RegisterShellFileTypes(TRUE);
 
-  // Dispatch commands specified on the command line.  Will return FALSE if
-  // app was launched with /RegServer, /Register, /Unregserver or /Unregister.
+  //// Dispatch commands specified on the command line.  Will return FALSE if
+  //// app was launched with /RegServer, /Register, /Unregserver or /Unregister.
   if (!ProcessShellCommand(cmdInfo))
     return FALSE;
-  // The main window has been initialized, so show and update it
+  //// The main window has been initialized, so show and update it
+  
+  m_nCmdShow = SW_SHOWMAXIMIZED;
   pMainFrame->ShowWindow(m_nCmdShow);
   pMainFrame->UpdateWindow();
+ // m_pMainWnd =  pMainFrame;
 
-  threadConnection = AfxBeginThread(task_Thread, this);
-
+  //threadConnection = AfxBeginThread(task_Thread, this);
   //thread = AfxBeginThread(MyThread, this);
- // DB_MANAGER->connect();
+
   return TRUE;
 }
 
@@ -149,9 +153,9 @@ int CGoodsDbApp::ExitInstance() {
   return CWinAppEx::ExitInstance();
 }
 
-// CGoodsDbApp message handlers
 
-// CAboutDlg dialog used for App About
+
+//------------------------------------------------------------//
 
 class CAboutDlg : public CDialogEx {
 public:
@@ -199,6 +203,7 @@ void CGoodsDbApp::LoadCustomState() {}
 
 void CGoodsDbApp::SaveCustomState() {}
 
+/*JUST FOR TESTING */
 void CGoodsDbApp::taskThread(void) {
 	DB_MANAGER->connect();
 	CMDIFrameWnd *pFrame = (CMDIFrameWnd*)AfxGetApp()->GetMainWnd();
@@ -218,3 +223,45 @@ UINT task_Thread(LPVOID param) {
 	return 0;
 }
 
+
+// Global functions
+
+void FillListCtrl(CListCtrl &list) {
+	   	list.SetExtendedStyle(
+		LVS_EX_FULLROWSELECT
+		| LVS_EX_GRIDLINES
+		| LVS_EX_TRACKSELECT
+		| LVS_SHOWSELALWAYS);
+
+	list.InsertColumn(0, _T("Un \n test"), LVCFMT_LEFT, -1, 0);
+	list.InsertColumn(1, _T("Deux"), LVCFMT_LEFT, -1, 1);
+	list.InsertColumn(2, _T("Trois"), LVCFMT_LEFT, -1, 2);
+
+	list.InsertItem(0, _T("Stan"));
+	list.SetItemText(0, 1, _T("Kyle"));
+	list.SetItemText(0, 2, _T("Cartman"));
+
+	list.InsertItem(1, _T("Wendy"));
+	list.SetItemText(1, 1, _T("Mr. Hat"));
+	list.SetItemText(1, 2, _T("Miss Ellen"));
+
+	list.InsertItem(2, _T("Kenny"));
+	list.SetItemText(2, 1, _T("Officer Barbrady"));
+	list.SetItemText(2, 2, _T("Chef"));
+
+	list.InsertItem(3, _T("Damien"));
+	list.SetItemText(3, 1, _T("Santa"));
+	list.SetItemText(3, 2, _T("Frosty"));
+
+	list.InsertItem(4, _T("Brian Boitano"));
+	list.SetItemText(4, 1, _T("Mr. Garrison"));
+	list.SetItemText(4, 2, _T("Brett Favre"));
+
+	list.InsertItem(5, _T("Trey"));
+	list.SetItemText(5, 1, _T("Matt"));
+	list.SetItemText(5, 2, _T("BASEketball"));
+
+	list.SetColumnWidth(0, LVSCW_AUTOSIZE_USEHEADER);
+	list.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);
+	list.SetColumnWidth(2, LVSCW_AUTOSIZE_USEHEADER);
+}

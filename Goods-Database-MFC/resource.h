@@ -46,6 +46,7 @@
 #define IDR_MENU_USER                   316
 #define IDD_ADD_EDIT_USER               317
 #define IDD_ADD_EDIT_PRODUCT            319
+#define IDD_DIALOG_TEST                 321
 #define IDC_LIST_USER                   1002
 #define IDC_LIST1                       1003
 #define IDC_BUTTON1                     1004
@@ -66,6 +67,14 @@
 #define IDC_EDIT_PRODUCT                1014
 #define IDC_WEIGHT                      1015
 #define IDC_DELETE_PRODUCT              1015
+#define IDC_ITEMS                       1019
+#define IDC_EDIT_NAME                   1020
+#define IDC_EDIT_EMAIL                  1021
+#define IDC_EDIT_PASSWORD               1022
+#define IDC_STATIC_NAME                 1024
+#define IDC_STATIC_EMAIL                1025
+#define IDC_STATIC_PASSWORD             1026
+#define IDC_LIST_USERS                  1029
 #define ID_USER_ADD                     32774
 #define ID_USER_EDIT                    32775
 #define ID_USER_DELETE                  32776
@@ -75,9 +84,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        321
+#define _APS_NEXT_RESOURCE_VALUE        323
 #define _APS_NEXT_COMMAND_VALUE         32778
-#define _APS_NEXT_CONTROL_VALUE         1016
+#define _APS_NEXT_CONTROL_VALUE         1030
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

@@ -14,9 +14,10 @@ using Actions = std::map<std::string, CallbackAction>;
 class DatabaseManager {
 
 private:
-	static DatabaseManager *inst_;  // The one, single instance
+	static DatabaseManager *_inst;  // The one, single instance
 	DatabaseManager();             // private constructor
 	DatabaseManager(const DatabaseManager &);
+	~DatabaseManager();
 	DatabaseManager &operator=(const DatabaseManager &);
 	
 	/*
@@ -37,6 +38,7 @@ public:
 
 	void addPerson(CString name, CString email, CString passowrd);
 	void printAllPerson() const;
+	large_set<Person> getAllPerson() const;
 	void deletePerson();
 
 	void addProduct(CString desc, double price, double weight);

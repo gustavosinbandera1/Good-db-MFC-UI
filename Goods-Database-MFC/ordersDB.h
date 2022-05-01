@@ -22,8 +22,10 @@ public:
 	boolean addPerson(char const* email, ref<Person> p);
 	size_t personListSize(void) const;
 	void printPerson(char const* email) const;
+
 	void printAllPersons(void) const;
 	int4 getLastPersonIndex()  const;
+	large_set<Person> getPersonList() const;
 
 	//------------------ Product list stuff ------------//
 	ref<Product> findProduct(char const* sku) const;

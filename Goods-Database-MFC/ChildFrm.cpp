@@ -33,6 +33,7 @@ BOOL CChildFrame::PreCreateWindow(CREATESTRUCT &cs) {
   // cs
   if (!CMDIChildWndEx::PreCreateWindow(cs))
     return FALSE;
+  // cs.style |= WS_MAXIMIZE;
 
   return TRUE;
 }
@@ -46,3 +47,9 @@ void CChildFrame::Dump(CDumpContext &dc) const { CMDIChildWndEx::Dump(dc); }
 #endif //_DEBUG
 
 // CChildFrame message handlers
+
+void CChildFrame::ActivateFrame(int nCmdShow) {
+  // TODO: Add your specialized code here and/or call the base class
+  nCmdShow = SW_SHOWMAXIMIZED;
+  CMDIChildWndEx::ActivateFrame(nCmdShow);
+}

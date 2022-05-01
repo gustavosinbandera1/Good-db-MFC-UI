@@ -33,10 +33,14 @@ void OrdersDB::printAllPersons(void) const {
 }
 
 int4 OrdersDB::getLastPersonIndex() const {
-	//ref<Person>  p = _set_all_people.members->last->obj;
+	ref<Person>  p = _set_all_people.members->last->obj;
 	//console::output("last People index %d ", p->getId());
 	//return p->getId();
 	return 0;
+}
+
+large_set<Person> OrdersDB::getPersonList() const {
+	return _set_all_people;
 }
 
 int4 OrdersDB::getLastProductIndex() const {

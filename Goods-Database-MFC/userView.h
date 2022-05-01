@@ -6,11 +6,16 @@ class UserView : public CDialogEx {
   DECLARE_DYNAMIC(UserView)
 
 public:
-  UserView(CWnd *pParent = nullptr); // standard constructor
+  UserView(bool read_only = false,
+           CWnd *pParent = nullptr); // standard constructor
   virtual ~UserView();
 
 private:
-  UsersView* m_parent;
+  CString name;
+  CString email;
+  CString password;
+  bool readOnly;
+  UsersView *m_parent;
   virtual void PostNcDestroy();
 
 // Dialog Data
@@ -23,14 +28,6 @@ protected:
 
   DECLARE_MESSAGE_MAP()
 public:
-	// user name
-	CString name;
-	// user email
-	CString email;
-	// user password
-	CString password;
-	// password repeat
-	CString passwordR;
-	afx_msg void OnBnClickedOk();
-	
+  afx_msg void OnBnClickedOk();
+  virtual BOOL OnInitDialog();
 };

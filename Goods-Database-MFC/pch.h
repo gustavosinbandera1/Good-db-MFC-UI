@@ -12,14 +12,12 @@
 #include <afxcontrolbars.h>
 #include <afxwin.h>
 #include <afxext.h>
-#include <afxext.h>
-#include <afxext.h>
-#include <afxext.h>
 
 /*pre compiled header might be in this order to avoid MFC conflicts */
 #include "dbscls.h"
 #include "goods.h"
 #include <afxcontrolbars.h>
-#include <afxcontrolbars.h>
+
+#define WM_NOTIFY_DESCRIPTION_EDITED             WM_APP + 1
 
 #endif //PCH_H

@@ -198,6 +198,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="address.h" />
+    <ClInclude Include="CInPlaceEdit.h" />
     <ClInclude Include="dbManager.h" />
     <ClInclude Include="ChildFrm.h" />
     <ClInclude Include="database-guard.h" />
@@ -206,7 +207,10 @@
     <ClInclude Include="Goods-Database-MFC.h" />
     <ClInclude Include="GoodsDbDoc.h" />
     <ClInclude Include="GoodsDBView.h" />
+    <ClInclude Include="HeaderCtrlEx.h" />
+    <ClInclude Include="ListCtrlEx.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="MultilineList.h" />
     <ClInclude Include="newOrderView.h" />
     <ClInclude Include="order.h" />
     <ClInclude Include="ordersDB.h" />
@@ -221,6 +225,7 @@
     <ClInclude Include="rootObject.h" />
     <ClInclude Include="setMember.h" />
     <ClInclude Include="small_set.h" />
+    <ClInclude Include="TableView.h" />
     <ClInclude Include="tabViewCtrlView.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="usersView.h" />
@@ -228,6 +233,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="address.cpp" />
+    <ClCompile Include="CInPlaceEdit.cpp" />
     <ClCompile Include="dbManager.cpp" />
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="database-guard.cpp" />
@@ -235,7 +241,10 @@
     <ClCompile Include="Goods-Database-MFC.cpp" />
     <ClCompile Include="GoodsDbDoc.cpp" />
     <ClCompile Include="GoodsDBView.cpp" />
+    <ClCompile Include="HeaderCtrlEx.cpp" />
+    <ClCompile Include="ListCtrlEx.cpp" />
     <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="MultilineList.cpp" />
     <ClCompile Include="newOrderView.cpp" />
     <ClCompile Include="order.cpp" />
     <ClCompile Include="ordersDB.cpp" />
@@ -254,6 +263,7 @@
     <ClCompile Include="rootObject.cpp" />
     <ClCompile Include="setMember.cpp" />
     <ClCompile Include="small_set.cpp" />
+    <ClCompile Include="TableView.cpp" />
     <ClCompile Include="tabViewCtrlView.cpp" />
     <ClCompile Include="usersView.cpp" />
     <ClCompile Include="userView.cpp" />

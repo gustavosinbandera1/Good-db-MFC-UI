@@ -15,7 +15,10 @@ public:
 	ref<Address> getAddress(char const *type = "SHIPPING_ADDRESS") const;
 	ref<String> getName() const { return this->_name; }
 	ref<String> getEmail() const { return this->_email_address; }
-	void print(void const *arg = NULL) const;
+	ref<String> getPassword() const { return this->_password; }
+
+	virtual void print(void const *arg = NULL) const override;
+	//virtual void returnItem(std::vector<Person> buffer) override;
 
 	struct SelectPattern {
 		char const *name;

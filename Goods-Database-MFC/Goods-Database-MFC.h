@@ -35,3 +35,4 @@ public:
 };
 
 extern CGoodsDbApp theApp;
+void FillListCtrl(CListCtrl& list);

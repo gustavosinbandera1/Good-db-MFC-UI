@@ -1,5 +1,6 @@
 #pragma once
 #include <afxtabview.h>
+
 class CTabViewCtrlView : public CTabView {
   DECLARE_DYNCREATE(CTabViewCtrlView)
 
@@ -9,6 +10,7 @@ protected:
 
 public:
 	CMFCTabCtrl tab_ctrl;
+	//CGoodsDbDoc* GetDocument() const;
 #ifdef _DEBUG
   virtual void AssertValid() const;
 #ifndef _WIN32_WCE
@@ -21,4 +23,17 @@ public:
 
 protected:
   DECLARE_MESSAGE_MAP()
+};
+
+// Nicely hack to access protected member
+class CMFCTabCtrlEx : public CMFCTabCtrl
+{
+public:
+	void SetDisableScroll() { 
+		m_bScroll = FALSE;
+		EnableActiveTabCloseButton(TRUE); //m_bActiveTabCloseButton = TRUE;
+		
+		m_nTabsHorzOffset = 400;
+		SetActiveTabBoldFont(TRUE);
+	}
 };

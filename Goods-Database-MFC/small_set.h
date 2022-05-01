@@ -1,4 +1,5 @@
 #pragma once
+#include "setMember.h"
 
 template<class T>
 class small_set {
@@ -7,6 +8,9 @@ public:
 	typedef void (T::*iterator)(void const* arg);
 
 	ref<set_owner> members;
+	
+	ref<set_member> next, mbr;
+	
 
 protected:
 	struct invocation {
@@ -52,9 +56,24 @@ public:
 		return members->iterate(SetMember::printTrampoline, arg);
 	}
 
+	size_t getCollection(void const* arg = NULL) const {
+		
+		return 0;
+	}
+
+	ref<set_member> getNext() {
+		if (mbr.is_nil()) {
+			mbr = members->first;
+			return mbr;
+		}
+		next = mbr->next;
+		mbr = next;
+		return next;
+	}
+
+
 	size_t select(void const* condition = NULL,
-		void const* print_arg = NULL) const
-	{
+		void const* print_arg = NULL) const {
 		typename SetMember::select_args args;
 		args.condition = condition;
 		args.print_arg = print_arg;

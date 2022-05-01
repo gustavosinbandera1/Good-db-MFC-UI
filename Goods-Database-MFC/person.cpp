@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "person.h"
-
+#include <vector>
 
 boolean Person::isUser() const { return True; }
 
@@ -22,6 +22,11 @@ void Person::print(void const *arg) const {
 	_password->print();
 	_set_all_user_addresses.print();
 }
+
+
+//void Person::returnItem(std::vector<Person> buffer) {
+//	
+//}
 
 boolean Person::select(void const *pattern) const {
 	SelectPattern *pat = (SelectPattern *)pattern;

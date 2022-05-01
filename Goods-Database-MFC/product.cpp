@@ -13,12 +13,12 @@ Product::Product(char const *sku, char const *description, double price,
 }
 
 void Product::print(void const *arg) const {
-	console::output("sku: %d", _iSku);
+	//console::output("sku: %d", _iSku);
 	//sSku->print();
-	console::output("\nDescription: ");
-	_sDescription->print();
-	console::output("\nPrice: %0.2lf", _nPrice);
-	console::output("\nWeight: %0.2lf", _nWeight);
+	//console::output("\nDescription: ");
+	//_sDescription->print();
+	//console::output("\nPrice: %0.2lf", _nPrice);
+	//console::output("\nWeight: %0.2lf", _nWeight);
 }
 
 field_descriptor &Product::describe_components() {
