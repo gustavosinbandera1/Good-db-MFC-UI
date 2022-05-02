@@ -43,6 +43,7 @@ public:
 
 	void addProduct(CString desc, double price, double weight);
 	void printAllProduct();
+	large_set<Product> getAllProduct() const;
 	void deleteProduct();
 
 	void addOrder();

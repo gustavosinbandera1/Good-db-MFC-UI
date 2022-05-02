@@ -51,6 +51,10 @@ int4 OrdersDB::getLastProductIndex() const {
 	return 0;
 }
 
+large_set<Product> OrdersDB::getProductList() const {
+	return _set_all_products;
+}
+
 ref<Product> OrdersDB::findProduct(char const * sku) const {
 	return _set_all_products.find(sku);
 }

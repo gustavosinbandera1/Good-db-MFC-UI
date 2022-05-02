@@ -175,6 +175,10 @@ void DatabaseManager::addProduct(CString desc, double price, double weight) {
 //----------------------------------------------------
 void DatabaseManager::printAllProduct() { ordersDb->printAllProducts(); }
 //----------------------------------------------------
+//----------------------------------------------------
+large_set<Product> DatabaseManager::getAllProduct() const {
+	return ordersDb->getProductList();
+}
 void DatabaseManager::deleteProduct() {
   //input("Sku: ", buf[0], sizeof buf[0]);
   modify(root)->removeProduct(buf[0]);

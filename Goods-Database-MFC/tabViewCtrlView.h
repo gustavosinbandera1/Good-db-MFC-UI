@@ -26,8 +26,7 @@ protected:
 };
 
 // Nicely hack to access protected member
-class CMFCTabCtrlEx : public CMFCTabCtrl
-{
+class CMFCTabCtrlEx : public CMFCTabCtrl {
 public:
 	void SetDisableScroll() { 
 		m_bScroll = FALSE;

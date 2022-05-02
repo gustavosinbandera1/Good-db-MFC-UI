@@ -37,6 +37,7 @@ public:
 	void printProduct(char const* sku) const;
 	void printAllProducts(void) const;
 	int4 getLastProductIndex() const;
+	large_set<Product> getProductList() const;
 
 	//----------------- Orders  list stuff ---------------//
 	ref<Order> findOrder(char const* orderID) const;

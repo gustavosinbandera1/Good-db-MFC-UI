@@ -1,17 +1,17 @@
 #include "pch.h"
-#include "CInPlaceEdit.h"
+#include "EditInPlace.h"
 
 // Construction
-CInPlaceEdit::CInPlaceEdit(int iItem, int iSubItem, CString sInitText)
+EditInPlace::EditInPlace(int iItem, int iSubItem, CString sInitText)
     : m_sInitText(sInitText) {
   m_iItem = iItem;
   m_iSubItem = iSubItem;
   m_bESC = FALSE;
 }
 
-CInPlaceEdit::~CInPlaceEdit() {}
+EditInPlace::~EditInPlace() {}
 
-BEGIN_MESSAGE_MAP(CInPlaceEdit, CEdit)
+BEGIN_MESSAGE_MAP(EditInPlace, CEdit)
 ON_WM_KILLFOCUS()
 ON_WM_NCDESTROY()
 ON_WM_CHAR()
@@ -22,7 +22,7 @@ END_MESSAGE_MAP()
 
 // Translate window messages before they are dispatched to the TranslateMessage
 // and DispatchMessage Windows functions.
-BOOL CInPlaceEdit::PreTranslateMessage(MSG *pMsg) {
+BOOL EditInPlace::PreTranslateMessage(MSG *pMsg) {
   if (pMsg->message == WM_KEYDOWN) {
     if (pMsg->wParam == VK_RETURN || pMsg->wParam == VK_DELETE ||
         pMsg->wParam == VK_ESCAPE || GetKeyState(VK_CONTROL)) {
@@ -37,7 +37,7 @@ BOOL CInPlaceEdit::PreTranslateMessage(MSG *pMsg) {
 }
 
 // Called immediately before losing the input focus
-void CInPlaceEdit::OnKillFocus(CWnd *pNewWnd) {
+void EditInPlace::OnKillFocus(CWnd *pNewWnd) {
   CEdit::OnKillFocus(pNewWnd);
   /*CString str;
   GetWindowText(str);*/
@@ -45,13 +45,13 @@ void CInPlaceEdit::OnKillFocus(CWnd *pNewWnd) {
 }
 
 // Called when nonclient area is being destroyed
-void CInPlaceEdit::OnNcDestroy() {
+void EditInPlace::OnNcDestroy() {
   CEdit::OnNcDestroy();
   delete this;
 }
 
 // Called for nonsystem character keystrokes
-void CInPlaceEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
+void EditInPlace::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
   if (nChar == VK_ESCAPE || nChar == VK_RETURN) {
     if (nChar == VK_ESCAPE) {
       m_bESC = TRUE;
@@ -117,8 +117,7 @@ void CInPlaceEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 // Called when application requests the Windows window be created by calling the
 // Create/CreateEx member function.
-int CInPlaceEdit::OnCreate(LPCREATESTRUCT lpCreateStruct) {
-  //AfxMessageBox(CString("OnCreate"));
+int EditInPlace::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   if (CEdit::OnCreate(lpCreateStruct) == -1) {
     return -1;
   }

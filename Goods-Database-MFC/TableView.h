@@ -2,7 +2,7 @@
 #include "ListCtrlEx.h"
 #include "HeaderCtrlEx.h"
 
-class CTableView : public CListCtrlEx {
+class CTableCtrl : public CListCtrlEx {
 public:
 
 //protected:

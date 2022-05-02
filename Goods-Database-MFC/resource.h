@@ -75,6 +75,12 @@
 #define IDC_STATIC_EMAIL                1025
 #define IDC_STATIC_PASSWORD             1026
 #define IDC_LIST_USERS                  1029
+#define IDC_EDIT_SKU                    1030
+#define IDC_LIST_PRODUCTS               1031
+#define IDC_INVENTORY_LIST              1032
+#define IDC_EDIT_DESCRIPTION            1033
+#define IDC_EDIT_PRICE                  1034
+#define IDC_EDIT_WEIGHT                 1035
 #define ID_USER_ADD                     32774
 #define ID_USER_EDIT                    32775
 #define ID_USER_DELETE                  32776
@@ -86,7 +92,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        323
 #define _APS_NEXT_COMMAND_VALUE         32778
-#define _APS_NEXT_CONTROL_VALUE         1030
+#define _APS_NEXT_CONTROL_VALUE         1033
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

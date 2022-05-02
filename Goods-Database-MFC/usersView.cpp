@@ -7,20 +7,22 @@
 #include "resource.h"
 
 IMPLEMENT_DYNCREATE(UsersView, CFormView)
-char const *const USER_HEADER_STRING[] = {"Name", "Email", "Password", NULL};
+
+std::vector<CString> USER_HEADERS { L"Name", L"Email", L"Password" };
+
 
 UsersView::UsersView() : CFormView(IDD_FORM_USER)
 , m_name(_T(""))
 , m_email(_T(""))
 , m_password(_T(""))
 , m_password_r(_T(""))
-{ m_initialized = FALSE; }
+{ }
+
 
 UsersView::~UsersView() {}
 
 void UsersView::DoDataExchange(CDataExchange *pDX) {
 	CFormView::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_ITEMS, m_table);
 	DDX_Text(pDX, IDC_EDIT_NAME, m_name);
 	DDX_Text(pDX, IDC_EDIT_EMAIL, m_email);
 	DDX_Text(pDX, IDC_EDIT_PASSWORD, m_password);
@@ -30,20 +32,13 @@ void UsersView::DoDataExchange(CDataExchange *pDX) {
 BEGIN_MESSAGE_MAP(UsersView, CFormView)
 ON_BN_CLICKED(IDC_ADD_USER, &UsersView::OnBnClickedAddUser)
 ON_WM_SIZE()
-ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_USERS, &UsersView::OnLvnItemchangedListUsers)
+//ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_USERS, &UsersView::OnLvnItemchangedListUsers)
 ON_MESSAGE(WM_NOTIFY_DESCRIPTION_EDITED, OnNotifyDescriptionEdited)
-//ON_NOTIFY(LVN_KEYDOWN, IDC_LIST_USERS, &UsersView::OnKeydownListUsers)
+ON_NOTIFY(LVN_COLUMNCLICK, IDC_LIST_USERS, &UsersView::OnColumnclickListUsers)
+ON_NOTIFY(NM_CLICK, IDC_LIST_USERS, &UsersView::OnClickListUsers)
 END_MESSAGE_MAP()
 
 // UsersView diagnostics
-
-#ifdef _DEBUG
-void UsersView::AssertValid() const { CFormView::AssertValid(); }
-
-#ifndef _WIN32_WCE
-void UsersView::Dump(CDumpContext &dc) const { CFormView::Dump(dc); }
-#endif
-#endif //_DEBUG
 
 // UsersView message handlers
 
@@ -57,7 +52,7 @@ void UsersView::userViewDeleted(UserView *usrview) {
 void UsersView::OnBnClickedAddUser() {
   CGoodsDbDoc *pDoc = GetDocument();
   if (pDoc != NULL) {
-    bool readOnly = true;
+    bool readOnly = false;
 
     m_userView = std::make_unique<UserView>(readOnly, this);
     m_userView->Create(IDD_ADD_EDIT_USER, this);
@@ -91,10 +86,13 @@ static void AddData(CListCtrl &ctrl, int row, int col, CString str) {
 
 void UsersView::OnInitialUpdate() {
   CFormView::OnInitialUpdate();
-  // populateTable();
-  FillListCtrl(m_usersTable);
+  m_usersTable.SetExtendedStyle(
+	  LVS_EX_FULLROWSELECT
+	  | LVS_EX_GRIDLINES
+	  | LVS_EX_TRACKSELECT
+	  | LVS_SHOWSELALWAYS);
 
-  // m_NewHeaderFont is of type CFont
+  populateTable();
   m_NewHeaderFont.CreatePointFont(190, CString("MS Serif"));
 
   CHeaderCtrl *pHeader = NULL;
@@ -114,95 +112,70 @@ void UsersView::OnInitialUpdate() {
 
   for (int i = 0; i < m_HeaderCtrl.GetItemCount(); i++) {
     m_HeaderCtrl.GetItem(i, &hdItem);
-
     hdItem.fmt |= HDF_OWNERDRAW;
-
     m_HeaderCtrl.SetItem(i, &hdItem);
   }
 }
 
 void UsersView::populateTable() {
-  //CGoodsDbDoc *pDoc = GetDocument();
-  //ref<set_member> mbr;
-  //large_set<Person> persons = pDoc->getAllUser();
+  CGoodsDbDoc *pDoc = GetDocument();
+  ref<set_member> mbr;
+  large_set<Person> persons = pDoc->getAllUser();
 
-  //const int numRows = persons.size();
-  //const int numCols =
-  //    ( sizeof(USER_HEADER_STRING) / sizeof(USER_HEADER_STRING[0]) ) - 1;
+  const int numRows = persons.size();
+  m_usersTable.setHeaders(USER_HEADERS);
 
-  ////m_table.SetSize(numCols, numRows);
-  //m_table.SetSize(numCols, numRows);
-  //for (int c = 0; c < numCols; c++) {
-  //  m_table.SetColHeading(c, CString(USER_HEADER_STRING[c]));
-  //  m_table.SetColWidth(c, 250);
-  //}
+  int row = 0;
+  do {
+    mbr = persons.getNext();
+    if (mbr != nullptr) {
+      ref<Person> p = mbr->obj;
+      const char *name = p->getName()->get_text();
+      const char *email = p->getEmail()->get_text();
+      const char *pwd = p->getPassword()->get_text();
 
-  //int col = 0;
-  //int row = 0;
-  //do {
-  //  mbr = persons.getNext();
-  //  if (mbr != nullptr) {
-  //    ref<Person> p = mbr->obj;
-  //    const char *name = p->getName()->get_text();
-  //    const char *email = p->getEmail()->get_text();
-  //    const char *pwd = p->getPassword()->get_text();
-
-  //    m_table.SetCellText(0, row, CString(name));
-  //    m_table.SetCellText(1, row, CString(email));
-  //    m_table.SetCellText(2, row, CString(pwd));
-  //    ++row;
-  //  }
-  //} while (mbr != NULL);
-}
-
-BOOL UsersView::OnCommand(WPARAM wParam, LPARAM lParam) {
-  //if ((HIWORD(wParam) == LBN_SELCHANGE) && (LOWORD(wParam) == IDC_ITEMS)) {
-  //  int selRow = m_table.GetSelRow();
-  //  if (selRow >= 0) {
-  //    m_name = m_table.GetCellText(0, selRow);
-  //    m_email = m_table.GetCellText(1, selRow);
-  //    m_password = m_table.GetCellText(2, selRow);
-  //    UpdateData(FALSE);
-  //  }
-  //}
-  return CFormView::OnCommand(wParam, lParam);
-}
-
-// Obtain cursor position and offset it to position it at interview list control
-CPoint UsersView::InterviewListCursorPosition() const {
-  DWORD pos = GetMessagePos();
-  CPoint pt(LOWORD(pos), HIWORD(pos));
-  ScreenToClient(&pt);
-
-  CRect rect;
-  CWnd *pWnd = GetDlgItem(IDC_LIST_USERS);
-  pWnd->GetWindowRect(&rect);
-  ScreenToClient(&rect);
-
-  pt.x -= rect.left;
-  pt.y -= rect.top;
-  return pt;
-}
-
-void UsersView::OnLvnItemchangedListUsers(NMHDR *pNMHDR, LRESULT *pResult) {
-	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-	int nItem = m_usersTable.getSelectedRow();
-	int nColumn =  m_usersTable.GetSelectedColumn();
-	
-	CString text = m_usersTable.GetItemText(nItem, 0);
-	//if(!text.IsEmpty())
-		//AfxMessageBox(text);
-	//CString data;
-	//if (nItem > 0) {
-		//data.Format(_T("col : %d and first text = %s"), nItem, text);
-		//AfxMessageBox(data);
-	//}
-
-	*pResult = 0;
+	  m_usersTable.InsertItem(row, CString(name));
+	  m_usersTable.SetItemText(row, 1, CString(email));
+	  m_usersTable.SetItemText(row, 2, CString(pwd));
+      ++row;
+    }
+  } while (mbr != NULL);
 }
 
 // OnNotifyDescriptionEdited()
 LRESULT UsersView::OnNotifyDescriptionEdited(WPARAM wParam, LPARAM lParam) {
   m_usersTable.OnEndLabelEdit(wParam, lParam);
   return 0;
+}
+
+
+void UsersView::OnColumnclickListUsers(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	//AfxMessageBox(CString("column HEADER click"));
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+}
+
+
+void UsersView::OnClickListUsers(NMHDR *pNMHDR, LRESULT *pResult) {
+	CString dat;
+
+	int selRow = m_usersTable.getSelectedRow();
+	int selCol = m_usersTable.GetSelectedColumn();
+	
+	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	
+	//dat.Format(_T("output row: %d  col: %d"), selRow, selCol);
+   //AfxMessageBox(dat);
+	
+   
+   if (selRow >= 0 || selCol >= 0) {
+		m_name = m_usersTable.GetItemText(selRow, 0);
+		m_email = m_usersTable.GetItemText(selRow, 1);
+		m_password = m_usersTable.GetItemText(selRow, 2);
+		UpdateData(FALSE);
+	}
+
+	*pResult = 0;
 }

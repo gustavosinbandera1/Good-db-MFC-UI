@@ -1,6 +1,7 @@
 #pragma once
 #include <afxcmn.h>
 #include "HeaderCtrlEx.h"
+#include <vector>
 
 class CListCtrlEx : public CListCtrl {
 public:
@@ -10,8 +11,8 @@ public:
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
+	void setHeaders(std::vector<CString> &headers);
 	
-
 protected:
 	CFont* m_pOldItemFont;
 	CFont* m_pOldSubItemFont;
@@ -116,14 +117,8 @@ public:
 	// methods for editable list
 	int GetRowFromPoint(CPoint &point, int *col) const;
 	CEdit* EditSubLabel(int nItem, int nCol);
-
-	void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-
 	void OnEndLabelEdit(WPARAM wParam, LPARAM lParam);
-	//void OnLButtonDown(UINT nFlags, CPoint point);
-
-
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult);
 };
 

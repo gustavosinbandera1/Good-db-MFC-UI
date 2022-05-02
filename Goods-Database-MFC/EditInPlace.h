@@ -2,15 +2,15 @@
 #include <afxwin.h>
 
 
-class CInPlaceEdit : public CEdit
+class EditInPlace : public CEdit
 {
 
 public:
-	CInPlaceEdit(int iItem, int iSubItem, CString sInitText);
+	EditInPlace(int iItem, int iSubItem, CString sInitText);
 	
 public:	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
-public:	virtual ~CInPlaceEdit();
+public:	virtual ~EditInPlace();
 
 protected:	
 	afx_msg void OnKillFocus(CWnd* pNewWnd);

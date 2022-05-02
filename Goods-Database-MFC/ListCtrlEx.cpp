@@ -1,18 +1,33 @@
 #include "pch.h"
 #include "ListCtrlEx.h"
 #include "resource.h"
-
-#include "CInPlaceEdit.h"
+#include "EditInPlace.h"
 
 BEGIN_MESSAGE_MAP(CListCtrlEx, CListCtrl)
 	ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, &CListCtrlEx::OnNMCustomdraw)
-	//ON_WM_CREATE()
-	ON_WM_LBUTTONDOWN()
+	// ON_WM_LBUTTONDOWN()
+	ON_NOTIFY_REFLECT(NM_DBLCLK, &CListCtrlEx::OnNMDblclk)
 END_MESSAGE_MAP()
 
 CListCtrlEx::CListCtrlEx() {}
 
 CListCtrlEx::~CListCtrlEx() {}
+
+void CListCtrlEx::setHeaders(std::vector<CString> &headers) {
+  // for (auto & header : headers) {
+  //}
+
+  int index;
+  for (std::vector<CString>::iterator it = headers.begin(); it != headers.end();
+       ++it) {
+    index = it - headers.begin();
+    InsertColumn(index, it->GetString(), LVCFMT_LEFT, -1, index);
+  }
+
+  for (int i = 0; i <= index; i++) {
+    SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
+  }
+}
 
 void CListCtrlEx::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult) {
   /*pointer to customDraw object*/
@@ -192,7 +207,7 @@ int CListCtrlEx::GetRowFromPoint(CPoint &point, int *col) const {
   }
 
   // Get the number of columns
-  //CHeaderCtrl *pHeader = (CHeaderCtrl *)GetDlgItem(0);
+  // CHeaderCtrl *pHeader = (CHeaderCtrl *)GetDlgItem(0);
   CHeaderCtrl *pHeader = GetHeaderCtrl();
   int nColumnCount = pHeader->GetItemCount();
 
@@ -267,7 +282,7 @@ CEdit *CListCtrlEx::EditSubLabel(int nItem, int nCol) {
   } else {
     dwStyle = ES_CENTER;
   }
-
+  // dwStyle = ES_LEFT;
   rect.left += offset + 4;
   rect.right = rect.left + GetColumnWidth(nCol) - 3;
 
@@ -277,49 +292,33 @@ CEdit *CListCtrlEx::EditSubLabel(int nItem, int nCol) {
 
   dwStyle |= WS_BORDER | WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL;
 
-  CEdit *pEdit = new CInPlaceEdit(nItem, nCol, GetItemText(nItem, nCol));
-  pEdit->Create(dwStyle, rect, this, IDC_LIST_USERS);
-
+  CEdit *pEdit = new EditInPlace(nItem, nCol, GetItemText(nItem, nCol));
+  // pEdit->Create(dwStyle, rect, this, IDC_LIST_USERS);
+  pEdit->Create(dwStyle, rect, this, NULL);
   return pEdit;
 }
 
-void CListCtrlEx::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar) {
-  if (GetFocus() != this)
-    SetFocus();
-  CListCtrl::OnHScroll(nSBCode, nPos, pScrollBar);
-}
-
-void CListCtrlEx::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar) {
-  if (GetFocus() != this)
-    SetFocus();
-  CListCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
-}
-
 void CListCtrlEx::OnEndLabelEdit(WPARAM wParam, LPARAM lParam) {
-	LV_DISPINFO* dispinfo = reinterpret_cast<LV_DISPINFO*>(lParam);
-	//// Persist the selected attachment details upon updating its text
-	this->SetItemText(dispinfo->item.iItem, dispinfo->item.iSubItem, dispinfo->item.pszText);
+  LV_DISPINFO *dispinfo = reinterpret_cast<LV_DISPINFO *>(lParam);
+  //// Persist the selected attachment details upon updating its text
+  this->SetItemText(dispinfo->item.iItem, dispinfo->item.iSubItem,
+                    dispinfo->item.pszText);
 }
 
 void CListCtrlEx::OnLButtonDown(UINT nFlags, CPoint point) {
-  // TODO: Add your message handler code here and/or call default
   CListCtrl::OnLButtonDown(nFlags, point);
-  int index;
-
-  ModifyStyle(0, LVS_EDITLABELS);
-
   int colnum;
-
-  if ((index = GetRowFromPoint(point, &colnum)) != -1) {
-    UINT flag = LVIS_FOCUSED;
-    if ((GetItemState(index, flag) & flag) == flag /*&& colnum == 2*/) {
-      // Add check for LVS_EDITLABELS
-      if (GetWindowLong(m_hWnd, GWL_STYLE) & LVS_EDITLABELS) {
-        EditSubLabel(index, colnum);
-      }
-    } else {
-      SetItemState(index, LVIS_SELECTED | LVIS_FOCUSED,
-                   LVIS_SELECTED | LVIS_FOCUSED);
-    }
+  int index = GetRowFromPoint(point, &colnum);
+  if (index != -1) {
+    EditSubLabel(index, colnum);
   }
+}
+
+void CListCtrlEx::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult) {
+  // AfxMessageBox(CString("DBle click"));
+  LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+  // TODO: Add your control notification handler code here
+  if (pNMItemActivate->iItem != -1)
+    EditSubLabel(pNMItemActivate->iItem, pNMItemActivate->iSubItem);
+  *pResult = 0;
 }

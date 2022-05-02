@@ -72,9 +72,11 @@ void ProductView::OnBnClickedOk() {
 
 BOOL ProductView::OnInitDialog() {
 	CDialogEx::OnInitDialog();
+	CEdit *Ce = (CEdit *)(this->GetDlgItem(IDC_SKU));
+	Ce->SetReadOnly(TRUE);
 	if (readOnly) {
-		CEdit *Ce = (CEdit *)(this->GetDlgItem(IDC_SKU));
-		Ce->SetReadOnly(TRUE);
+		//CEdit *Ce = (CEdit *)(this->GetDlgItem(IDC_SKU));
+		//Ce->SetReadOnly(TRUE);
 
 		Ce = (CEdit *)(this->GetDlgItem(IDC_DESCRIPTION));
 		Ce->SetReadOnly(TRUE);

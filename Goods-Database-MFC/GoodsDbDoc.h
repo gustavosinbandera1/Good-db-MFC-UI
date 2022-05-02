@@ -41,6 +41,7 @@ public:
   void addProduct(CString description, double price, double weight);
   void printAllProduct();
   void deleteProduct();
+  large_set<Product> getAllProduct();
 
   void addOrder();
   void printAllOrders();

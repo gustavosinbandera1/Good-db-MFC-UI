@@ -138,6 +138,10 @@ void CGoodsDbDoc::printAllProduct() {
 
 }
 
+large_set<Product> CGoodsDbDoc::getAllProduct() {
+	return dbManager->getAllProduct();
+}
+
 void CGoodsDbDoc::deleteProduct() {
 
 }
