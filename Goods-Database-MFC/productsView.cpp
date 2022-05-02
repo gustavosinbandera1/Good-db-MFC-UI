@@ -8,7 +8,7 @@
 
 IMPLEMENT_DYNCREATE(ProductsView, CFormView)
 
-std::vector<CString> PRODUCT_HEADERS{ L"Sku", L"Description", L"Price", L"Weight" };
+std::vector<std::pair<CString, bool>> PRODUCT_HEADERS{ {L"Sku", true}, {L"Description",true}, {L"Price",true}, {L"Weight",false} };
 
 
 ProductsView::ProductsView() : CFormView(IDD_FORM_PRODUCT), m_sSku(_T(""))

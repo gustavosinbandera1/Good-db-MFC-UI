@@ -10,8 +10,16 @@
 
 IMPLEMENT_DYNCREATE(NewOrderView, CFormView)
 
-std::vector<CString> ITEM_HEADERS{ L"Sku", L"Description", L"Price", L"Quantity", L"Total" };
+std::vector<std::pair<CString, bool>> ITEM_HEADERS{ {L"Sku",false}, {L"Product",false}, {L"Price", false}, {L"Quantity", true}, {L"Total", false} };
 
+enum class USER_HEADERS_POS {
+	SKU,
+	DESCRIPTION,
+	PRICE,
+	QUANTITY,
+	TOTAL,
+	NUM_HEADERS
+};
 
 NewOrderView::NewOrderView() : CFormView(IDD_FORM_NEW_ORDER) {}
 
@@ -22,6 +30,12 @@ void NewOrderView::DoDataExchange(CDataExchange *pDX) {
 	DDX_Control(pDX, IDC_INVENTORY_LIST, m_newOrderObj);
 }
 
+BEGIN_MESSAGE_MAP(NewOrderView, CFormView)
+	ON_MESSAGE(WM_NOTIFY_DESCRIPTION_EDITED, OnNotifyDescriptionEdited)
+	ON_BN_CLICKED(IDC_BUTTON1, &NewOrderView::OnBnClickedButton1)
+END_MESSAGE_MAP()
+
+
 CGoodsDbDoc * NewOrderView::GetDocument() const {
 	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CGoodsDbDoc)));
 	return (CGoodsDbDoc *)m_pDocument;
@@ -31,13 +45,9 @@ void NewOrderView::populateTable() {
 	CGoodsDbDoc *pDoc = GetDocument();
 	ref<set_member> mbr;
 	int _quantity = 0;
-	//if(pDoc != nullptr)
-		large_set<Product> products = pDoc->getAllProduct();
+	large_set<Product> products = pDoc->getAllProduct();
 
-	//const int numRows = products.size();
 	m_newOrderObj.setHeaders(ITEM_HEADERS);
-
-
 
 	int row = 0;
 	do {
@@ -62,11 +72,28 @@ void NewOrderView::populateTable() {
 			m_newOrderObj.SetItemText(row, 1, CString(desc));
 			m_newOrderObj.SetItemText(row, 2, _price);
 			m_newOrderObj.SetItemText(row, 3, _quantity);
-			m_newOrderObj.SetItemText(row, 3, _total);
+			m_newOrderObj.SetItemText(row, 4, _total);
 			++row;
 		}
 	} while (mbr != NULL);
 }
+
+LRESULT NewOrderView::OnNotifyDescriptionEdited(WPARAM wParam, LPARAM lParam) {
+	LV_DISPINFO *dispinfo = reinterpret_cast<LV_DISPINFO*>(lParam);
+	int subItem = dispinfo->item.iSubItem;
+	int item = dispinfo->item.iItem;
+	
+	CString  price = m_newOrderObj.GetItemText( item, (int)USER_HEADERS_POS::PRICE );
+	CString quantity = dispinfo->item.pszText;
+	CString data;
+	double amount = _tstof(price) * _tstof(quantity);
+	
+	data.Format(_T("%0.2f"),amount);
+	m_newOrderObj.SetItemText(item, (int)USER_HEADERS_POS::TOTAL, data);
+	m_newOrderObj.OnEndLabelEdit(wParam, lParam);
+		return 0;
+}
+
 
 void NewOrderView::OnColumnclickListItems(NMHDR * pNMHDR, LRESULT * pResult) {
 	//AfxMessageBox(CString("column HEADER click"));
@@ -104,28 +131,28 @@ void NewOrderView::OnInitialUpdate() {
 		| LVS_SHOWSELALWAYS);
 
 	populateTable();
-	//m_NewHeaderFont.CreatePointFont(190, CString("MS Serif"));
+	m_NewHeaderFont.CreatePointFont(190, CString("MS Serif"));
 
-	//CHeaderCtrl *pHeader = NULL;
-	//pHeader = m_newOrderObj.GetHeaderCtrl();
+	CHeaderCtrl *pHeader = NULL;
+	pHeader = m_newOrderObj.GetHeaderCtrl();
 
-	//if (pHeader == NULL)
-	//	return;
+	if (pHeader == NULL)
+		return;
 
-	//VERIFY(m_HeaderCtrl.SubclassWindow(pHeader->m_hWnd));
+	VERIFY(m_HeaderCtrl.SubclassWindow(pHeader->m_hWnd));
 
 	//////// A BIGGER FONT MAKES THE CONTROL BIGGER
-	//m_HeaderCtrl.SetFont(&m_NewHeaderFont);
+	m_HeaderCtrl.SetFont(&m_NewHeaderFont);
 
-	//HDITEM hdItem;
+	HDITEM hdItem;
 
-	//hdItem.mask = HDI_FORMAT;
+	hdItem.mask = HDI_FORMAT;
 
-	//for (int i = 0; i < m_HeaderCtrl.GetItemCount(); i++) {
-	//	m_HeaderCtrl.GetItem(i, &hdItem);
-	//	hdItem.fmt |= HDF_OWNERDRAW;
-	//	m_HeaderCtrl.SetItem(i, &hdItem);
-	//}
+	for (int i = 0; i < m_HeaderCtrl.GetItemCount(); i++) {
+		m_HeaderCtrl.GetItem(i, &hdItem);
+		hdItem.fmt |= HDF_OWNERDRAW;
+		m_HeaderCtrl.SetItem(i, &hdItem);
+	}
 }
 
 BOOL NewOrderView::PreCreateWindow(CREATESTRUCT &cs) {
@@ -133,5 +160,10 @@ BOOL NewOrderView::PreCreateWindow(CREATESTRUCT &cs) {
 	return CFormView::PreCreateWindow(cs);
 }
 
-BEGIN_MESSAGE_MAP(NewOrderView, CFormView)
-END_MESSAGE_MAP()
+
+
+
+void NewOrderView::OnBnClickedButton1() {
+	//get all items with quantity different to zero or empty field 
+	
+}

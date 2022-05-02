@@ -8,7 +8,8 @@
 
 IMPLEMENT_DYNCREATE(UsersView, CFormView)
 
-std::vector<CString> USER_HEADERS { L"Name", L"Email", L"Password" };
+//second param read/write description
+std::vector<std::pair<CString, bool>> USER_HEADERS{ {L"Name", true }, {L"Email", true}, {L"Password", true} };
 
 
 UsersView::UsersView() : CFormView(IDD_FORM_USER)

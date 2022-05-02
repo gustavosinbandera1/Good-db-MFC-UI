@@ -13,15 +13,17 @@ CListCtrlEx::CListCtrlEx() {}
 
 CListCtrlEx::~CListCtrlEx() {}
 
-void CListCtrlEx::setHeaders(std::vector<CString> &headers) {
+
+void CListCtrlEx::setHeaders(std::vector<std::pair<CString, bool>> &hdrs) {
   // for (auto & header : headers) {
   //}
 
   int index;
-  for (std::vector<CString>::iterator it = headers.begin(); it != headers.end();
+  headers = hdrs;
+  for (std::vector<std::pair<CString,bool>>::iterator it = headers.begin(); it != headers.end();
        ++it) {
     index = it - headers.begin();
-    InsertColumn(index, it->GetString(), LVCFMT_LEFT, -1, index);
+    InsertColumn(index, it->first.GetString(), LVCFMT_LEFT, -1, index);
   }
 
   for (int i = 0; i <= index; i++) {
@@ -315,10 +317,11 @@ void CListCtrlEx::OnLButtonDown(UINT nFlags, CPoint point) {
 }
 
 void CListCtrlEx::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult) {
-  // AfxMessageBox(CString("DBle click"));
   LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
-  // TODO: Add your control notification handler code here
-  if (pNMItemActivate->iItem != -1)
-    EditSubLabel(pNMItemActivate->iItem, pNMItemActivate->iSubItem);
+  if (pNMItemActivate->iItem != -1) {
+    if (headers[pNMItemActivate->iSubItem].second == true) {
+      EditSubLabel(pNMItemActivate->iItem, pNMItemActivate->iSubItem);
+    }
+  }
   *pResult = 0;
 }

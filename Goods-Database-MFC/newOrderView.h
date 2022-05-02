@@ -34,4 +34,5 @@ public:
 	afx_msg void OnClickListItem(NMHDR *pNMHDR, LRESULT *pResult);
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual void OnInitialUpdate();
+	afx_msg void OnBnClickedButton1();
 };

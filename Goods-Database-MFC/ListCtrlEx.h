@@ -11,11 +11,12 @@ public:
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
-	void setHeaders(std::vector<CString> &headers);
+	void setHeaders(std::vector<std::pair<CString, bool>> &headers);
 	
 protected:
 	CFont* m_pOldItemFont;
 	CFont* m_pOldSubItemFont;
+	std::vector<std::pair<CString, bool>> headers;
 
 
 	afx_msg void OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult);
