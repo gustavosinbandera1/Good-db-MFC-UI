@@ -2,9 +2,10 @@
 #include <memory>
 #include "CAddress.h"
 #include "TableView.h"
-#include "CAddress.h"
+//#include "CAddress.h"
 
 class CGoodsDbDoc;
+class CAddressView;
 class UserView;
 
 extern char const *const USER_HEADER_STRING[];
@@ -15,7 +16,7 @@ class UsersView : public CFormView {
 private:
   /*FormView for add or edit users*/
   std::unique_ptr<UserView> m_userView;
-  std::unique_ptr <CAddress> m_userAddress;
+  std::unique_ptr<CAddressView> m_userAddress;
   CString m_name;
   CString m_email;
   CString m_password;
@@ -45,7 +46,7 @@ public:
   /*For releasing dialog memory and avoid memory leak*/
   CGoodsDbDoc *GetDocument() const;
   void userViewDeleted(UserView *usrview);
-  void addressViewDeleted(CAddress *addrView);
+  void addressViewDeleted(CAddressView *addrView);
   void populateTable();
 
 public:

@@ -5,7 +5,7 @@
 #pragma once
 
 //UINT dbTaskThread(LPVOID param);
-
+//class Order;
 class CGoodsDbDoc : public CDocument {
 protected: // create from serialization only
   CGoodsDbDoc() noexcept;
@@ -53,6 +53,12 @@ public:
   void addDetail(ref<Order> order, char const* productSku, int quantity);
   void deleteDetail(char const* orderId, char const* detailId);
   void deleteDetail();
+
+
+  void addUserAddress(CString name, CString email, CString password);
+  void printAllUserAddress() const;
+  void deleteUserAddress(CString email);
+  
 protected:
   // Generated message map functions
 protected:

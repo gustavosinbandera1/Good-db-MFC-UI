@@ -88,7 +88,6 @@
 #define IDC_BUTTON_ADD_ADDRESS          1035
 #define IDC_COMBO_CITY                  1036
 #define IDC_COMBO_STATE                 1037
-#define IDC_COMBO_ZIP_CODE              1038
 #define IDC_COMBO_TYPE                  1038
 #define IDC_EDIT_ADDRESS_INFO           1039
 #define ID_USER_ADD                     32774

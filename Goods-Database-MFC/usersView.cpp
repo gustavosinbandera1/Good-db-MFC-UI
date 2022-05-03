@@ -8,37 +8,30 @@
 
 IMPLEMENT_DYNCREATE(UsersView, CFormView)
 
-//second param read/write description
-std::vector<std::pair<CString, bool>> USER_HEADERS{ {L"Name", true }, {L"Email", true}, {L"Password", true} };
+// second param read/write description
+std::vector<std::pair<CString, bool>> USER_HEADERS{
+    {L"Name", true}, {L"Email", true}, {L"Password", true}};
 
-enum class USER_HEADERS_POS {
-	NAME,
-	EMAIL,
-	PASSWORD,
-	NUM_HEADERS
-};
-UsersView::UsersView() : CFormView(IDD_FORM_USER)
-, m_name(_T(""))
-, m_email(_T(""))
-, m_password(_T(""))
-, m_password_r(_T(""))
-{ }
-
+enum class USER_HEADERS_POS { NAME, EMAIL, PASSWORD, NUM_HEADERS };
+UsersView::UsersView()
+    : CFormView(IDD_FORM_USER), m_name(_T("")), m_email(_T("")),
+      m_password(_T("")), m_password_r(_T("")) {}
 
 UsersView::~UsersView() {}
 
 void UsersView::DoDataExchange(CDataExchange *pDX) {
-	CFormView::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_EDIT_NAME, m_name);
-	DDX_Text(pDX, IDC_EDIT_EMAIL, m_email);
-	DDX_Text(pDX, IDC_EDIT_PASSWORD, m_password);
-	DDX_Control(pDX, IDC_LIST_USERS, m_usersTable);
+  CFormView::DoDataExchange(pDX);
+  DDX_Text(pDX, IDC_EDIT_NAME, m_name);
+  DDX_Text(pDX, IDC_EDIT_EMAIL, m_email);
+  DDX_Text(pDX, IDC_EDIT_PASSWORD, m_password);
+  DDX_Control(pDX, IDC_LIST_USERS, m_usersTable);
 }
 
 BEGIN_MESSAGE_MAP(UsersView, CFormView)
 ON_BN_CLICKED(IDC_ADD_USER, &UsersView::OnBnClickedAddUser)
 ON_WM_SIZE()
-//ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_USERS, &UsersView::OnLvnItemchangedListUsers)
+// ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_USERS,
+// &UsersView::OnLvnItemchangedListUsers)
 ON_MESSAGE(WM_NOTIFY_DESCRIPTION_EDITED, OnNotifyDescriptionEdited)
 ON_NOTIFY(LVN_COLUMNCLICK, IDC_LIST_USERS, &UsersView::OnColumnclickListUsers)
 ON_NOTIFY(NM_CLICK, IDC_LIST_USERS, &UsersView::OnClickListUsers)
@@ -56,10 +49,10 @@ void UsersView::userViewDeleted(UserView *usrview) {
   }
 }
 
-void UsersView::addressViewDeleted(CAddress * addrView) {
-		if (m_userAddress && (m_userAddress.get() == addrView)) {
-			m_userAddress.reset(nullptr);
-		}
+void UsersView::addressViewDeleted(CAddressView *addrView) {
+  if (m_userAddress && (m_userAddress.get() == addrView)) {
+    m_userAddress.reset(nullptr);
+  }
 }
 
 void UsersView::OnBnClickedAddUser() {
@@ -99,11 +92,8 @@ static void AddData(CListCtrl &ctrl, int row, int col, CString str) {
 
 void UsersView::OnInitialUpdate() {
   CFormView::OnInitialUpdate();
-  m_usersTable.SetExtendedStyle(
-	  LVS_EX_FULLROWSELECT
-	  | LVS_EX_GRIDLINES
-	  | LVS_EX_TRACKSELECT
-	  | LVS_SHOWSELALWAYS);
+  m_usersTable.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES |
+                                LVS_EX_TRACKSELECT | LVS_SHOWSELALWAYS);
 
   populateTable();
   m_NewHeaderFont.CreatePointFont(190, CString("MS Serif"));
@@ -147,9 +137,9 @@ void UsersView::populateTable() {
       const char *email = p->getEmail()->get_text();
       const char *pwd = p->getPassword()->get_text();
 
-	  m_usersTable.InsertItem(row, CString(name));
-	  m_usersTable.SetItemText(row, 1, CString(email));
-	  m_usersTable.SetItemText(row, 2, CString(pwd));
+      m_usersTable.InsertItem(row, CString(name));
+      m_usersTable.SetItemText(row, 1, CString(email));
+      m_usersTable.SetItemText(row, 2, CString(pwd));
       ++row;
     }
   } while (mbr != NULL);
@@ -162,10 +152,10 @@ LRESULT UsersView::OnNotifyDescriptionEdited(WPARAM wParam, LPARAM lParam) {
   int col = dispinfo->item.iSubItem;
 
   m_usersTable.OnEndLabelEdit(wParam, lParam);
-  
+
   switch (col) {
-	  case static_cast<int>(USER_HEADERS_POS::NAME) :
-		m_name = m_usersTable.GetItemText(row, col);
+  case static_cast<int>(USER_HEADERS_POS::NAME):
+    m_name = m_usersTable.GetItemText(row, col);
     break;
   case static_cast<int>(USER_HEADERS_POS::EMAIL):
     m_email = m_usersTable.GetItemText(row, col);
@@ -182,48 +172,43 @@ LRESULT UsersView::OnNotifyDescriptionEdited(WPARAM wParam, LPARAM lParam) {
   return 0;
 }
 
-void UsersView::OnColumnclickListUsers(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	//AfxMessageBox(CString("column HEADER click"));
-	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-	// TODO: Add your control notification handler code here
-	*pResult = 0;
+void UsersView::OnColumnclickListUsers(NMHDR *pNMHDR, LRESULT *pResult) {
+  // AfxMessageBox(CString("column HEADER click"));
+  LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+  // TODO: Add your control notification handler code here
+  *pResult = 0;
 }
-
 
 void UsersView::OnClickListUsers(NMHDR *pNMHDR, LRESULT *pResult) {
-	CString dat;
+  CString dat;
 
-	int selRow = m_usersTable.getSelectedRow();
-	int selCol = m_usersTable.GetSelectedColumn();
-	
-	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
-	
-	//dat.Format(_T("output row: %d  col: %d"), selRow, selCol);
-   //AfxMessageBox(dat);
-	
-   
-   if (selRow >= 0 || selCol >= 0) {
-		m_name = m_usersTable.GetItemText(selRow, 0);
-		m_email = m_usersTable.GetItemText(selRow, 1);
-		m_password = m_usersTable.GetItemText(selRow, 2);
-		UpdateData(FALSE);
-	}
+  int selRow = m_usersTable.getSelectedRow();
+  int selCol = m_usersTable.GetSelectedColumn();
 
-	*pResult = 0;
+  LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+
+  if (selRow >= 0 || selCol >= 0) {
+    m_name = m_usersTable.GetItemText(selRow, 0);
+    m_email = m_usersTable.GetItemText(selRow, 1);
+    m_password = m_usersTable.GetItemText(selRow, 2);
+    UpdateData(FALSE);
+  }
+
+  *pResult = 0;
 }
 
-
 void UsersView::OnBnClickedButtonAddAddress() {
-	CGoodsDbDoc *pDoc = GetDocument();
-	if (pDoc != NULL) {
-		bool readOnly = false;
+  if (m_name.IsEmpty())
+    return;
 
-		m_userAddress = std::make_unique<CAddress>(this);
-		m_userAddress->Create(IDD_DIALOG_ADD_ADDRESS, this);
-		m_userAddress->ShowWindow(SW_SHOW);
-	}
-	else {
-		AfxMessageBox(CString("There isn't document to perform the task "));
-	}
+  CGoodsDbDoc *pDoc = GetDocument();
+  if (pDoc != NULL) {
+    bool readOnly = false;
+
+    m_userAddress = std::make_unique<CAddressView>(this);
+    m_userAddress->Create(IDD_DIALOG_ADD_ADDRESS, this);
+    m_userAddress->ShowWindow(SW_SHOW);
+  } else {
+    AfxMessageBox(CString("There isn't document to perform the task "));
+  }
 }

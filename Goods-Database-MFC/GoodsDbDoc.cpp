@@ -15,6 +15,7 @@
 #include "GoodsDbDoc.h"
 #include "ordersDB.h"
 #include <propkey.h>
+//#include "order.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -144,4 +145,7 @@ large_set<Product> CGoodsDbDoc::getAllProduct() {
 
 void CGoodsDbDoc::deleteProduct() {
 
+}
+
+void CGoodsDbDoc::addDetail(ref<Order> order, char const * productSku, int quantity) {
 }

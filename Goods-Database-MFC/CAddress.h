@@ -1,13 +1,12 @@
 #pragma once
-
 // CAddress dialog
-
-class CAddress : public CDialog {
-  DECLARE_DYNAMIC(CAddress)
+class UsersView;
+class CAddressView : public CDialog {
+  DECLARE_DYNAMIC(CAddressView)
 
 public:
-  CAddress(CWnd *pParent = nullptr); // standard constructor
-  virtual ~CAddress();
+  CAddressView(CWnd *pParent); // standard constructor
+  virtual ~CAddressView();
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
@@ -26,6 +25,7 @@ public:
 	virtual BOOL OnInitDialog();
 
 private:
+	UsersView *m_parent;
 	CComboBox combo_country;
 	CComboBox combo_city;
 	CComboBox combo_state;
@@ -33,4 +33,7 @@ private:
 
 private:
 	void populateOptions();
+public:
+	afx_msg void OnBnClickedOk();
+	virtual void PostNcDestroy();
 };
