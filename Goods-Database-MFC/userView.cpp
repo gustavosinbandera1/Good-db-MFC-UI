@@ -40,9 +40,7 @@ void UserView::OnBnClickedOk() {
   UpdateData(TRUE);
   try {
     m_parent->GetDocument()->addUser(this->name, this->email, this->password);
-    //AfxMessageBox(CString("Saved here"));
-    EndDialog(IDOK);
-
+	EndDialog(IDOK);
     m_parent->Invalidate();
     m_parent->UpdateWindow();
   } catch (CString e) {
@@ -72,12 +70,5 @@ BOOL UserView::OnInitDialog() {
     Ce = (CEdit *)(this->GetDlgItem(IDC_PASSWORD_R));
     Ce->SetReadOnly(TRUE);
   }
-
-  AfxMessageBox(CString("Init Dialog .............. "));
-  // TODO:  Add extra initialization here
-
-
-
-  return TRUE; // return TRUE unless you set the focus to a control
-               // EXCEPTION: OCX Property Pages should return FALSE
+  return TRUE;
 }

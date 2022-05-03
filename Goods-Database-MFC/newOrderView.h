@@ -1,6 +1,8 @@
 #pragma once
 #include "TableView.h"
 
+
+
 class CGoodsDbDoc;
 
 class NewOrderView : public CFormView {
@@ -25,7 +27,9 @@ public:
 	CGoodsDbDoc *GetDocument() const;
 	void populateTable();
 
-	
+private:
+	CButton submitBtn;
+	double totalOrder = 0;
 
 public:
 	afx_msg LRESULT OnNotifyDescriptionEdited(WPARAM, LPARAM);
@@ -35,4 +39,6 @@ public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual void OnInitialUpdate();
 	afx_msg void OnBnClickedButton1();
+	afx_msg void OnBnClickedButtonSubmitOrder();
+	
 };

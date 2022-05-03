@@ -11,7 +11,12 @@ IMPLEMENT_DYNCREATE(UsersView, CFormView)
 //second param read/write description
 std::vector<std::pair<CString, bool>> USER_HEADERS{ {L"Name", true }, {L"Email", true}, {L"Password", true} };
 
-
+enum class USER_HEADERS_POS {
+	NAME,
+	EMAIL,
+	PASSWORD,
+	NUM_HEADERS
+};
 UsersView::UsersView() : CFormView(IDD_FORM_USER)
 , m_name(_T(""))
 , m_email(_T(""))
@@ -145,10 +150,30 @@ void UsersView::populateTable() {
 
 // OnNotifyDescriptionEdited()
 LRESULT UsersView::OnNotifyDescriptionEdited(WPARAM wParam, LPARAM lParam) {
+  LV_DISPINFO *dispinfo = reinterpret_cast<LV_DISPINFO *>(lParam);
+  int row = dispinfo->item.iItem;
+  int col = dispinfo->item.iSubItem;
+
   m_usersTable.OnEndLabelEdit(wParam, lParam);
+  
+  switch (col) {
+	  case static_cast<int>(USER_HEADERS_POS::NAME) :
+		m_name = m_usersTable.GetItemText(row, col);
+    break;
+  case static_cast<int>(USER_HEADERS_POS::EMAIL):
+    m_email = m_usersTable.GetItemText(row, col);
+    break;
+  case static_cast<int>(USER_HEADERS_POS::PASSWORD):
+    m_password = m_usersTable.GetItemText(row, col);
+    break;
+
+  default:
+    break;
+  }
+
+  UpdateData(false);
   return 0;
 }
-
 
 void UsersView::OnColumnclickListUsers(NMHDR *pNMHDR, LRESULT *pResult)
 {
