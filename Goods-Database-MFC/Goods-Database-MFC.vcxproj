@@ -198,6 +198,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="address.h" />
+    <ClInclude Include="CAddress.h" />
     <ClInclude Include="EditInPlace.h" />
     <ClInclude Include="dbManager.h" />
     <ClInclude Include="ChildFrm.h" />
@@ -232,6 +233,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="address.cpp" />
+    <ClCompile Include="CAddress.cpp" />
     <ClCompile Include="CInPlaceEdit.cpp" />
     <ClCompile Include="dbManager.cpp" />
     <ClCompile Include="ChildFrm.cpp" />

@@ -2,7 +2,6 @@
 #include "TableView.h"
 
 
-
 class CGoodsDbDoc;
 
 class NewOrderView : public CFormView {
@@ -28,6 +27,7 @@ public:
 	void populateTable();
 
 private:
+	
 	CButton submitBtn;
 	double totalOrder = 0;
 

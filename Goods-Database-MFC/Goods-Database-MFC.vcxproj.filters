@@ -111,6 +111,9 @@
     <ClInclude Include="EditInPlace.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CAddress.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Goods-Database-MFC.cpp">
@@ -198,6 +201,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CInPlaceEdit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CAddress.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

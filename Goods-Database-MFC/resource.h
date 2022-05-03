@@ -47,12 +47,14 @@
 #define IDD_ADD_EDIT_USER               317
 #define IDD_ADD_EDIT_PRODUCT            319
 #define IDD_DIALOG_TEST                 321
+#define IDD_DIALOG_ADD_ADDRESS          323
 #define IDC_LIST_USER                   1002
 #define IDC_LIST1                       1003
 #define IDC_BUTTON1                     1004
 #define IDC_BUTTON2                     1005
 #define IDC_BUTTON3                     1006
 #define IDC_COMBO1                      1007
+#define IDC_COMBO_COUNTRY               1007
 #define IDC_NAME                        1008
 #define IDC_EMAIL                       1009
 #define IDC_ADD_USER                    1009
@@ -83,6 +85,12 @@
 #define IDC_EDIT_PRICE                  1034
 #define IDC_BUTTON_CLEAR_ORDER          1034
 #define IDC_EDIT_WEIGHT                 1035
+#define IDC_BUTTON_ADD_ADDRESS          1035
+#define IDC_COMBO_CITY                  1036
+#define IDC_COMBO_STATE                 1037
+#define IDC_COMBO_ZIP_CODE              1038
+#define IDC_COMBO_TYPE                  1038
+#define IDC_EDIT_ADDRESS_INFO           1039
 #define ID_USER_ADD                     32774
 #define ID_USER_EDIT                    32775
 #define ID_USER_DELETE                  32776
@@ -92,9 +100,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        323
+#define _APS_NEXT_RESOURCE_VALUE        325
 #define _APS_NEXT_COMMAND_VALUE         32778
-#define _APS_NEXT_CONTROL_VALUE         1035
+#define _APS_NEXT_CONTROL_VALUE         1040
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

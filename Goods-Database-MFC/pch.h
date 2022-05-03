@@ -17,6 +17,7 @@
 #include "dbscls.h"
 #include "goods.h"
 #include <afxcontrolbars.h>
+#include <afxwin.h>
 
 #define WM_NOTIFY_DESCRIPTION_EDITED             WM_APP + 1
 

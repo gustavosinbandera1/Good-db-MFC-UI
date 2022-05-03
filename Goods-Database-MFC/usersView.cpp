@@ -42,6 +42,7 @@ ON_WM_SIZE()
 ON_MESSAGE(WM_NOTIFY_DESCRIPTION_EDITED, OnNotifyDescriptionEdited)
 ON_NOTIFY(LVN_COLUMNCLICK, IDC_LIST_USERS, &UsersView::OnColumnclickListUsers)
 ON_NOTIFY(NM_CLICK, IDC_LIST_USERS, &UsersView::OnClickListUsers)
+ON_BN_CLICKED(IDC_BUTTON_ADD_ADDRESS, &UsersView::OnBnClickedButtonAddAddress)
 END_MESSAGE_MAP()
 
 // UsersView diagnostics
@@ -53,6 +54,12 @@ void UsersView::userViewDeleted(UserView *usrview) {
   if (m_userView && (m_userView.get() == usrview)) {
     m_userView.reset(nullptr);
   }
+}
+
+void UsersView::addressViewDeleted(CAddress * addrView) {
+		if (m_userAddress && (m_userAddress.get() == addrView)) {
+			m_userAddress.reset(nullptr);
+		}
 }
 
 void UsersView::OnBnClickedAddUser() {
@@ -204,4 +211,19 @@ void UsersView::OnClickListUsers(NMHDR *pNMHDR, LRESULT *pResult) {
 	}
 
 	*pResult = 0;
+}
+
+
+void UsersView::OnBnClickedButtonAddAddress() {
+	CGoodsDbDoc *pDoc = GetDocument();
+	if (pDoc != NULL) {
+		bool readOnly = false;
+
+		m_userAddress = std::make_unique<CAddress>(this);
+		m_userAddress->Create(IDD_DIALOG_ADD_ADDRESS, this);
+		m_userAddress->ShowWindow(SW_SHOW);
+	}
+	else {
+		AfxMessageBox(CString("There isn't document to perform the task "));
+	}
 }
